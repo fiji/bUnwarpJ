@@ -25,6 +25,13 @@
 		</dependency>
 	</dependencies>
 
+	<scm>
+		<connection>scm:git:git://github.com/fiji/bUnwarpJ</connection>
+		<developerConnection>scm:git:git@github.com:fiji/bUnwarpJ</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/fiji/bUnwarpJ</url>
+	</scm>
+
 	<repositories>
 		<!-- NB: for project parent, in case of partial checkout -->
 		<repository>
