@@ -25,6 +25,11 @@
 		</dependency>
 	</dependencies>
 
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/bUnwarpJ/</url>
+	</ciManagement>
+
 	<scm>
 		<connection>scm:git:git://github.com/fiji/bUnwarpJ</connection>
 		<developerConnection>scm:git:git@github.com:fiji/bUnwarpJ</developerConnection>
