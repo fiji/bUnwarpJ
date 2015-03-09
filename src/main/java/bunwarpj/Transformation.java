@@ -5517,7 +5517,6 @@ public class Transformation
 		public void run()
 		{
 			// Compute the warped image
-			int uv = rect.y * rect.width + rect.x;
 			int auxTargetHeight = rect.y + rect.height;
 			int auxTargetWidth = rect.x + rect.width;
 			
@@ -5530,7 +5529,7 @@ public class Transformation
 				final int v_offset = v_rect * rect.width;
 				final double tv = (double)(v * intervals) / (double)(auxTargetCurrentHeight - 1) + 1.0F;
 				
-				for (int u_rect = 0, u=rect.x; u<auxTargetWidth; u++, uv++, u_rect++) 
+				for (int u_rect = 0, u=rect.x; u<auxTargetWidth; u++, u_rect++) 
 				{
 			
 			
@@ -5649,7 +5648,6 @@ public class Transformation
 		public void run()
 		{
 			// Compute the warped image
-			int uv = rect.y * rect.width + rect.x;
 			int auxTargetHeight = rect.y + rect.height;
 			int auxTargetWidth = rect.x + rect.width;
 			
@@ -5664,7 +5662,7 @@ public class Transformation
 				final int v_offset = v_rect * rect.width;
 				final double tv = (double)(v * intervals) / (double)(auxTargetCurrentHeight - 1) + 1.0F;
 				
-				for (int u_rect = 0, u=rect.x; u<auxTargetWidth; u++, uv++, u_rect++) 
+				for (int u_rect = 0, u=rect.x; u<auxTargetWidth; u++, u_rect++) 
 				{
 						
 					final double tu = (double)(u * intervals) / (double)(auxTargetCurrentWidth - 1) + 1.0F;			
