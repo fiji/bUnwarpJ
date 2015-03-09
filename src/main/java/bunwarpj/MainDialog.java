@@ -840,18 +840,6 @@ public class MainDialog extends GenericDialog
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Add the image list to the list of choices.
-	 *
-	 * @param choice list of choices
-	 */
-	private void addImageList (final Choice choice)
-	{
-		for (int k = 0; (k < imageList.length); k++)
-			choice.add(imageList[k].getTitle());
-	} /* end addImageList */
-
-	/*------------------------------------------------------------------*/
-	/**
 	 * Close all the variables related to the source image.
 	 */
 	private void cancelSource ()
@@ -1141,16 +1129,6 @@ public class MainDialog extends GenericDialog
 		this.target.setPyramidDepth(imagePyramidDepth + min_scale_image);
 		//this.target.getThread().start();
 	} /* end permuteImages */
-
-	/*------------------------------------------------------------------*/
-	/**
-	 * Remove the points from the points handlers of the source and target image.
-	 */
-	private void removePoints ()
-	{
-		sourcePh.removePoints();
-		targetPh.removePoints();
-	}
 
 	/*------------------------------------------------------------------*/
 	/**
