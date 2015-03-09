@@ -1543,6 +1543,7 @@ public class MiscTools
 				line = line.trim();
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
+					br.close();
 					fr.close();
 					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
@@ -1554,6 +1555,7 @@ public class MiscTools
 				line = line.trim();
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
+					br.close();
 					fr.close();
 					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
@@ -1565,6 +1567,7 @@ public class MiscTools
 				line = line.trim();
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
+					br.close();
 					fr.close();
 					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
@@ -1576,6 +1579,7 @@ public class MiscTools
 				line = line.trim();
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
+					br.close();
 					fr.close();
 					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
@@ -1684,6 +1688,7 @@ public class MiscTools
 			StringTokenizer st = new StringTokenizer(line,"=");
 			if (st.countTokens()!=2)
 			{
+				br.close();
 				fr.close();
 				IJ.log("Line "+lineN+"+: Cannot read number of intervals");
 				return;
@@ -1703,6 +1708,7 @@ public class MiscTools
 				st=new StringTokenizer(line);
 				if (st.countTokens()!=intervals+3)
 				{
+					br.close();
 					fr.close();
 					IJ.log("Line "+lineN+": Cannot read enough coefficients");
 					return;
@@ -1723,6 +1729,7 @@ public class MiscTools
 				st = new StringTokenizer(line);
 				if (st.countTokens()!=intervals+3)
 				{
+					br.close();
 					fr.close();
 					IJ.log("Line "+lineN+": Cannot read enough coefficients");
 					return;
@@ -1798,6 +1805,7 @@ public class MiscTools
 				st = new StringTokenizer(line);
 				if (st.countTokens() != width)
 				{
+					br.close();
 					fr.close();
 					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
@@ -1818,6 +1826,7 @@ public class MiscTools
 				st = new StringTokenizer(line);
 				if (st.countTokens() != width)
 				{
+					br.close();
 					fr.close();
 					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
@@ -1899,6 +1908,7 @@ public class MiscTools
 				st = new StringTokenizer(line);
 				if (st.countTokens() != width)
 				{
+					br.close();
 					fr.close();
 					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
@@ -1919,6 +1929,7 @@ public class MiscTools
 				st = new StringTokenizer(line);
 				if (st.countTokens() != width)
 				{
+					br.close();
 					fr.close();
 					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
