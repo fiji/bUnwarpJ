@@ -1535,7 +1535,7 @@ public class MiscTools
 			int k = 1;
 			if (!(line = br.readLine()).equals("Index\txSource\tySource\txTarget\tyTarget")) {
 				fr.close();
-				IJ.write("Line " + k + ": 'Index\txSource\tySource\txTarget\tyTarget'");
+				IJ.log("Line " + k + ": 'Index\txSource\tySource\txTarget\tyTarget'");
 				return;
 			}
 			++k;
@@ -1544,7 +1544,7 @@ public class MiscTools
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
 					fr.close();
-					IJ.write("Line " + k
+					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
 					return;
 				}
@@ -1555,7 +1555,7 @@ public class MiscTools
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
 					fr.close();
-					IJ.write("Line " + k
+					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
 					return;
 				}
@@ -1566,7 +1566,7 @@ public class MiscTools
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
 					fr.close();
-					IJ.write("Line " + k
+					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
 					return;
 				}
@@ -1577,7 +1577,7 @@ public class MiscTools
 				separatorIndex = line.indexOf('\t');
 				if (separatorIndex == -1) {
 					fr.close();
-					IJ.write("Line " + k
+					IJ.log("Line " + k
 							+ ": #Index# <tab> #xSource# <tab> #ySource# <tab> #xTarget# <tab> #yTarget#");
 					return;
 				}
@@ -1685,7 +1685,7 @@ public class MiscTools
 			if (st.countTokens()!=2)
 			{
 				fr.close();
-				IJ.write("Line "+lineN+"+: Cannot read number of intervals");
+				IJ.log("Line "+lineN+"+: Cannot read number of intervals");
 				return;
 			}
 			st.nextToken();
@@ -1704,7 +1704,7 @@ public class MiscTools
 				if (st.countTokens()!=intervals+3)
 				{
 					fr.close();
-					IJ.write("Line "+lineN+": Cannot read enough coefficients");
+					IJ.log("Line "+lineN+": Cannot read enough coefficients");
 					return;
 				}
 				for (int j=0; j<intervals+3; j++)
@@ -1724,7 +1724,7 @@ public class MiscTools
 				if (st.countTokens()!=intervals+3)
 				{
 					fr.close();
-					IJ.write("Line "+lineN+": Cannot read enough coefficients");
+					IJ.log("Line "+lineN+": Cannot read enough coefficients");
 					return;
 				}
 				for (int j=0; j<intervals+3; j++)
@@ -1767,7 +1767,7 @@ public class MiscTools
 			if (st.countTokens() != 2)
 			{
 				fr.close();
-				IJ.write("Line "+lineN+"+: Cannot read transformation width");
+				IJ.log("Line "+lineN+"+: Cannot read transformation width");
 				return;
 			}
 			st.nextToken();
@@ -1780,7 +1780,7 @@ public class MiscTools
 			if (st.countTokens() != 2)
 			{
 				fr.close();
-				IJ.write("Line " + lineN + "+: Cannot read transformation height");
+				IJ.log("Line " + lineN + "+: Cannot read transformation height");
 				return;
 			}
 			st.nextToken();
@@ -1799,7 +1799,7 @@ public class MiscTools
 				if (st.countTokens() != width)
 				{
 					fr.close();
-					IJ.write("Line "+lineN+": Cannot read enough coordinates");
+					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
 				}
 				for (int j = 0; j < width; j++)
@@ -1819,7 +1819,7 @@ public class MiscTools
 				if (st.countTokens() != width)
 				{
 					fr.close();
-					IJ.write("Line "+lineN+": Cannot read enough coordinates");
+					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
 				}
 				for (int j = 0; j < width; j++)
@@ -1868,7 +1868,7 @@ public class MiscTools
 			if (st.countTokens() != 2)
 			{
 				fr.close();
-				IJ.write("Line "+lineN+"+: Cannot read transformation width");
+				IJ.log("Line "+lineN+"+: Cannot read transformation width");
 				return;
 			}
 			st.nextToken();
@@ -1881,7 +1881,7 @@ public class MiscTools
 			if (st.countTokens() != 2)
 			{
 				fr.close();
-				IJ.write("Line " + lineN + "+: Cannot read transformation height");
+				IJ.log("Line " + lineN + "+: Cannot read transformation height");
 				return;
 			}
 			st.nextToken();
@@ -1900,7 +1900,7 @@ public class MiscTools
 				if (st.countTokens() != width)
 				{
 					fr.close();
-					IJ.write("Line "+lineN+": Cannot read enough coordinates");
+					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
 				}
 				for (int j = 0; j < width; j++)
@@ -1920,7 +1920,7 @@ public class MiscTools
 				if (st.countTokens() != width)
 				{
 					fr.close();
-					IJ.write("Line "+lineN+": Cannot read enough coordinates");
+					IJ.log("Line "+lineN+": Cannot read enough coordinates");
 					return;
 				}
 				for (int j = 0; j < width; j++)
@@ -1967,7 +1967,7 @@ public class MiscTools
 			if (st.countTokens() != 6)
 			{
 				fr.close();
-				IJ.write("Cannot read affine transformation matrix");
+				IJ.log("Cannot read affine transformation matrix");
 				return;
 			}
 
@@ -2540,7 +2540,7 @@ public class MiscTools
 			StringTokenizer st=new StringTokenizer(line,"=");
 			if (st.countTokens()!=2) {
 				fr.close();
-				IJ.write("Line "+lineN+"+: Cannot read number of intervals");
+				IJ.log("Line "+lineN+"+: Cannot read number of intervals");
 				return -1;
 			}
 			st.nextToken();
