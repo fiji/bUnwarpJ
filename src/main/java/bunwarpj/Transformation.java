@@ -4837,7 +4837,18 @@ public class Transformation
 	public void saveDirectTransformation()
 	{
 		saveTransformation(intervals, cxTargetToSource, cyTargetToSource, false);		
-	} 
+	}
+	
+	//------------------------------------------------------------------
+	/**
+	 * Save target to source transformation into a file. 
+	 */
+	public void saveDirectTransformation( String fileName )
+	{
+		MiscTools.saveElasticTransformation( intervals, cxTargetToSource, 
+				cyTargetToSource, fileName );		
+	}
+	
 	//------------------------------------------------------------------
 	/**
 	 * Save target transformation. GUI mode. 
@@ -4845,6 +4856,36 @@ public class Transformation
 	public void saveInverseTransformation()
 	{
 		saveTransformation(intervals, cxSourceToTarget, cySourceToTarget, true);
+	}
+	
+	//------------------------------------------------------------------
+	/**
+	 * Save source to target transformation into a file. 
+	 */
+	public void saveInverseTransformation( String fileName )
+	{
+		MiscTools.saveElasticTransformation( intervals, cxSourceToTarget, 
+				cySourceToTarget, fileName );
+	}
+	
+	//------------------------------------------------------------------
+	/**
+	 * Load target to source transformation from a file. 
+	 */
+	public void loadDirectTransformation( String fileName )
+	{
+		MiscTools.loadTransformation( fileName, 
+				cxTargetToSource, cyTargetToSource );		
+	}
+	
+	//------------------------------------------------------------------
+	/**
+	 * Load source to target transformation from a file. 
+	 */
+	public void loadInverseTransformation( String fileName )
+	{
+		MiscTools.loadTransformation( fileName, cxSourceToTarget, 
+				cySourceToTarget );
 	}
 	
 	//------------------------------------------------------------------
