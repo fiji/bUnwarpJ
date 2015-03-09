@@ -109,7 +109,7 @@ public class PointHandler extends Roi
 			final Mask mask,
 			final MainDialog dialog)
 	{
-		super(0, 0, imp.getWidth(), imp.getHeight(), imp);
+		super( 0, 0, imp.getWidth(), imp.getHeight() );
 		this.imp = imp;
 		this.tb = tb;
 		this.dialog = dialog;
@@ -140,7 +140,7 @@ public class PointHandler extends Roi
 	 */
 	public PointHandler (final ImagePlus imp)
 	{
-		super(0, 0, imp.getWidth(), imp.getHeight(), imp);
+		super( 0, 0, imp.getWidth(), imp.getHeight() );
 		this.imp = imp;
 		tb = null;
 		dialog = null;
