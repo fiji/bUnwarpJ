@@ -2579,5 +2579,16 @@ public class BSplineModel implements Runnable
 		 this.maxImageSubsamplingFactor = maxImageSubsamplingFactor;		
 	 }
 	 
+	 //------------------------------------------------------------------
+	 /**
+	  * Get sub-sampling factor at highest resolution
+	  * 
+	  * @return maxImageSubsamplingFactor
+	  */
+	 public int getSubsamplingFactor() 
+	 {
+		 return this.maxImageSubsamplingFactor;		
+	 }
+
 
 } /* end class BSplineModel */
