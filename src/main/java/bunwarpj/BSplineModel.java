@@ -60,9 +60,9 @@ public class BSplineModel implements Runnable
 
 	// Stack for the pyramid of images/coefficients
 	/** stack of coefficients pyramid */
-	private final Stack cpyramid   = new Stack();
+	private final Stack<Object> cpyramid   = new Stack<Object>();
 	/** stack of image pyramid */
-	private final Stack imgpyramid = new Stack();
+	private final Stack<Object> imgpyramid = new Stack<Object>();
 
 	// Original image, image spline coefficients, and gradient
 	/** original image, full-size without scaling */
