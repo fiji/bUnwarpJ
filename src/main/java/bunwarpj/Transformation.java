@@ -771,23 +771,23 @@ public class Transformation
 		{
 			if(this.imageWeight != 0)
 			{
-				IJ.write(" Optimal direct similarity error = " + this.finalDirectSimilarityError);
-				IJ.write(" Optimal inverse similarity error = " + this.finalInverseSimilarityError);
+				IJ.log(" Optimal direct similarity error = " + this.finalDirectSimilarityError);
+				IJ.log(" Optimal inverse similarity error = " + this.finalInverseSimilarityError);
 			}
 			if(this.curlWeight != 0 || this.divWeight != 0)
 			{
-				IJ.write(" Optimal direct regularization error = " + this.finalDirectRegularizationError);
-				IJ.write(" Optimal inverse regularization error = " + this.finalInverseRegularizationError);
+				IJ.log(" Optimal direct regularization error = " + this.finalDirectRegularizationError);
+				IJ.log(" Optimal inverse regularization error = " + this.finalInverseRegularizationError);
 			}
 			if(this.landmarkWeight != 0)
 			{
-				IJ.write(" Optimal direct landmark error = " + this.finalDirectLandmarkError);
-				IJ.write(" Optimal inverse landmark error = " + this.finalInverseLandmarkError);
+				IJ.log(" Optimal direct landmark error = " + this.finalDirectLandmarkError);
+				IJ.log(" Optimal inverse landmark error = " + this.finalInverseLandmarkError);
 			}
 			if(this.consistencyWeight != 0)
 			{
-				IJ.write(" Optimal direct consistency error = " + this.finalDirectConsistencyError);
-				IJ.write(" Optimal inverse consistency error = " + this.finalInverseConsistencyError);
+				IJ.log(" Optimal direct consistency error = " + this.finalDirectConsistencyError);
+				IJ.log(" Optimal inverse consistency error = " + this.finalInverseConsistencyError);
 			}
 		}
 		
@@ -1036,19 +1036,19 @@ public class Transformation
 		{
 			if(this.imageWeight != 0)
 			{
-				IJ.write(" Optimal direct similarity error = " + this.finalDirectSimilarityError);
+				IJ.log(" Optimal direct similarity error = " + this.finalDirectSimilarityError);
 			}
 			if(this.curlWeight != 0 || this.divWeight != 0)
 			{
-				IJ.write(" Optimal direct regularization error = " + this.finalDirectRegularizationError);
+				IJ.log(" Optimal direct regularization error = " + this.finalDirectRegularizationError);
 			}
 			if(this.landmarkWeight != 0)
 			{
-				IJ.write(" Optimal direct landmark error = " + this.finalDirectLandmarkError);
+				IJ.log(" Optimal direct landmark error = " + this.finalDirectLandmarkError);
 			}
 			if(this.consistencyWeight != 0)
 			{
-				IJ.write(" Optimal direct consistency error = " + this.finalDirectConsistencyError);
+				IJ.log(" Optimal direct consistency error = " + this.finalDirectConsistencyError);
 			}
 		}
 		
@@ -2882,8 +2882,8 @@ public class Transformation
 
 		if (showMarquardtOptim)
 		{
-			IJ.write("    Consistency Error (s-t): " + consistencyDirectError);
-			IJ.write("    Consistency Error (t-s): " + consistencyInverseError);
+			IJ.log("    Consistency Error (s-t): " + consistencyDirectError);
+			IJ.log("    Consistency Error (t-s): " + consistencyInverseError);
 		}
 
 
@@ -3133,8 +3133,8 @@ public class Transformation
 
 		if (showMarquardtOptim)
 		{
-			IJ.write("    Consistency Error (s-t): " + consistencyDirectError);
-			IJ.write("    Consistency Error (t-s): " + consistencyInverseError);
+			IJ.log("    Consistency Error (s-t): " + consistencyDirectError);
+			IJ.log("    Consistency Error (t-s): " + consistencyInverseError);
 		}
 
 
@@ -3572,7 +3572,7 @@ public class Transformation
 			String s = bIsReverse ? new String("(t-s)") : new String("(s-t)");
 			if (imageWeight != 0) 
 			{
-				IJ.write("    Image          error " + s + ": " + imageSimilarity);
+				IJ.log("    Image          error " + s + ": " + imageSimilarity);
 				if(bIsReverse)
 					this.partialInverseSimilarityError = imageSimilarity;
 				else
@@ -3581,7 +3581,7 @@ public class Transformation
 			}
 			if (landmarkWeight != 0)               
 			{
-				IJ.write("    Landmark       error " + s + ": " + landmarkError);
+				IJ.log("    Landmark       error " + s + ": " + landmarkError);
 				if(bIsReverse)
 					this.partialInverseLandmarkError = landmarkError;
 				else
@@ -3589,7 +3589,7 @@ public class Transformation
 			}
 			if (divWeight != 0 || curlWeight != 0)
 			{
-				IJ.write("    Regularization error " + s + ": " + regularization);
+				IJ.log("    Regularization error " + s + ": " + regularization);
 				if(bIsReverse)
 					this.partialInverseRegularizationError = regularization;
 				else
@@ -4052,7 +4052,7 @@ public class Transformation
 			String s = bIsReverse ? new String("(t-s)") : new String("(s-t)");
 			if (imageWeight != 0) 
 			{
-				IJ.write("    Image          error " + s + ": " + imageSimilarity);
+				IJ.log("    Image          error " + s + ": " + imageSimilarity);
 				if(bIsReverse)
 					this.partialInverseSimilarityError = imageSimilarity;
 				else
@@ -4061,7 +4061,7 @@ public class Transformation
 			}
 			if (consistencyWeight != 0) 
 			{
-				IJ.write("    Consistency          error " + s + ": " + consistencyError);
+				IJ.log("    Consistency          error " + s + ": " + consistencyError);
 				if(bIsReverse)
 					this.partialInverseConsitencyError = consistencyError;
 				else
@@ -4070,7 +4070,7 @@ public class Transformation
 			}
 			if (landmarkWeight != 0)               
 			{
-				IJ.write("    Landmark       error " + s + ": " + landmarkError);
+				IJ.log("    Landmark       error " + s + ": " + landmarkError);
 				if(bIsReverse)
 					this.partialInverseLandmarkError = landmarkError;
 				else
@@ -4078,7 +4078,7 @@ public class Transformation
 			}
 			if (divWeight != 0 || curlWeight != 0)
 			{
-				IJ.write("    Regularization error " + s + ": " + regularization);
+				IJ.log("    Regularization error " + s + ": " + regularization);
 				if(bIsReverse)
 					this.partialInverseRegularizationError = regularization;
 				else
@@ -4286,7 +4286,7 @@ public class Transformation
 		/* First computation of the energy */
 		f = energyFunction(x, intervals, grad, false, false);
 
-		if (showMarquardtOptim) IJ.write("f(1)="+f);
+		if (showMarquardtOptim) IJ.log("f(1)="+f);
 
 		/* Initially the hessian is the identity matrix multiplied by
           the first function value */
@@ -4342,7 +4342,7 @@ public class Transformation
 			f = energyFunction(x, intervals, grad, false, false);
 			iter++;
 			if (showMarquardtOptim) 
-				IJ.write("f("+iter+")="+f+" lambda="+lambda);
+				IJ.log("f("+iter+")="+f+" lambda="+lambda);
 			ProgressBar.stepProgressBar();
 
 			/* Update lambda -------------------------------------------------- */
@@ -4368,7 +4368,7 @@ public class Transformation
                  update the geometry, and decrease the lambda */
 				/* Estimate the hessian ....................................... */
 				if (showMarquardtOptim) 
-					IJ.write("  Accepted");
+					IJ.log("  Accepted");
 				if ((last_successful_iter++%10)==0 && outputLevel>-1)
 					update_outputs(x, intervals);
 
@@ -4425,11 +4425,11 @@ public class Transformation
 					} 
 					else
 						if (showMarquardtOptim)
-							IJ.write("Hessian cannot be safely updated, ill-conditioned");
+							IJ.log("Hessian cannot be safely updated, ill-conditioned");
 
 				} else
 					if (showMarquardtOptim)
-						IJ.write("Hessian cannot be safely updated");
+						IJ.log("Hessian cannot be safely updated");
 
 				/* Update geometry and lambda ................................. */
 				rescuedf = f;
@@ -4560,7 +4560,7 @@ public class Transformation
 		//f = evaluateSimilarity(x, intervals, grad, false, false, false);
 		f = evaluateSimilarityMultiThread(x, intervals, grad, false, false);
 
-		if (showMarquardtOptim) IJ.write("f(1)="+f);
+		if (showMarquardtOptim) IJ.log("f(1)="+f);
 
 		/* Initially the hessian is the identity matrix multiplied by
           the first function value */
@@ -4618,7 +4618,7 @@ public class Transformation
 			
 			iter++;
 			if (showMarquardtOptim) 
-				IJ.write("f("+iter+")="+f+" lambda="+lambda);
+				IJ.log("f("+iter+")="+f+" lambda="+lambda);
 			ProgressBar.stepProgressBar();
 
 			/* Update lambda -------------------------------------------------- */
@@ -4639,7 +4639,7 @@ public class Transformation
                  update the geometry, and decrease the lambda */
 				/* Estimate the hessian ....................................... */
 				if (showMarquardtOptim) 
-					IJ.write("  Accepted");
+					IJ.log("  Accepted");
 				if ((last_successful_iter++%10)==0 && outputLevel>-1)
 					update_current_output(x,intervals, false);
 
@@ -4696,11 +4696,11 @@ public class Transformation
 					} 
 					else
 						if (showMarquardtOptim)
-							IJ.write("Hessian cannot be safely updated, ill-conditioned");
+							IJ.log("Hessian cannot be safely updated, ill-conditioned");
 
 				} else
 					if (showMarquardtOptim)
-						IJ.write("Hessian cannot be safely updated");
+						IJ.log("Hessian cannot be safely updated");
 
 				/* Update geometry and lambda ................................. */
 				rescuedf = f;
@@ -6687,7 +6687,7 @@ public class Transformation
 			String s = bIsReverse ? new String("(t-s)") : new String("(s-t)");
 			if (imageWeight != 0) 
 			{
-				IJ.write("    Image          error " + s + ": " + imageSimilarity);
+				IJ.log("    Image          error " + s + ": " + imageSimilarity);
 				if(bIsReverse)
 					this.partialInverseSimilarityError = imageSimilarity;
 				else
@@ -6696,7 +6696,7 @@ public class Transformation
 			}
 			if (landmarkWeight != 0)               
 			{
-				IJ.write("    Landmark       error " + s + ": " + landmarkError);
+				IJ.log("    Landmark       error " + s + ": " + landmarkError);
 				if(bIsReverse)
 					this.partialInverseLandmarkError = landmarkError;
 				else
@@ -6704,7 +6704,7 @@ public class Transformation
 			}
 			if (divWeight != 0 || curlWeight != 0)
 			{
-				IJ.write("    Regularization error " + s + ": " + regularization);
+				IJ.log("    Regularization error " + s + ": " + regularization);
 				if(bIsReverse)
 					this.partialInverseRegularizationError = regularization;
 				else
@@ -7024,8 +7024,8 @@ public class Transformation
 
 		if (showMarquardtOptim)
 		{
-			IJ.write("    Consistency Error (s-t): " + consistencyDirectError);
-			IJ.write("    Consistency Error (t-s): " + consistencyInverseError);
+			IJ.log("    Consistency Error (s-t): " + consistencyDirectError);
+			IJ.log("    Consistency Error (t-s): " + consistencyInverseError);
 		}
 
 
