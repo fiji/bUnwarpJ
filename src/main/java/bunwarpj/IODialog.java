@@ -594,9 +594,9 @@ public class IODialog extends Dialog implements ActionListener
 		double warpingIndex = MiscTools.warpingIndex(this.sourceImp, this.targetImp, intervals, cx_direct, cy_direct, cx_inverse, cy_inverse);
 
 		if(warpingIndex != -1)
-			IJ.write(" Warping index = " + warpingIndex);
+			IJ.log(" Warping index = " + warpingIndex);
 		else
-			IJ.write(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
+			IJ.log(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
 
 	}
 
@@ -826,9 +826,9 @@ public class IODialog extends Dialog implements ActionListener
 				this.targetImp, intervals, cx_direct, cy_direct, transformation_x, transformation_y);
 
 		if(warpingIndex != -1)
-			IJ.write(" Warping index = " + warpingIndex);
+			IJ.log(" Warping index = " + warpingIndex);
 		else
-			IJ.write(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
+			IJ.log(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
 	}
 
 	/*------------------------------------------------------------------*/
@@ -872,9 +872,9 @@ public class IODialog extends Dialog implements ActionListener
 				this.targetImp, transformation_x_1, transformation_y_1, transformation_x_2, transformation_y_2);
 
 		if(warpingIndex != -1)
-			IJ.write(" Warping index = " + warpingIndex);
+			IJ.log(" Warping index = " + warpingIndex);
 		else
-			IJ.write(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
+			IJ.log(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
 	}
 
 	/*------------------------------------------------------------------*/
@@ -1104,7 +1104,7 @@ public class IODialog extends Dialog implements ActionListener
 			while (ySource.length() < 7) {
 				ySource = " " + ySource;
 			}
-			IJ.write(n + "\t" + xSource + "\t" + ySource + "\t" + xTarget + "\t" + yTarget);
+			IJ.getTextPanel().append(n + "\t" + xSource + "\t" + ySource + "\t" + xTarget + "\t" + yTarget);
 		}
 	} /* end showPoints */
 
