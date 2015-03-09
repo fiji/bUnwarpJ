@@ -1210,7 +1210,9 @@ public class Transformation
 
 	//------------------------------------------------------------------
 	/**
-	 * Apply the current transformation to a given point.
+	 * Apply the current transformation to a given point. Point coordinates must
+	 * be in real space (highest resolution). The transformation will take the 
+	 * subsampling factor into account. 
 	 *
 	 * @param u input, x- point coordinate
 	 * @param v input, y- point coordinate
@@ -1232,14 +1234,19 @@ public class Transformation
 			swy = swySourceToTarget;
 		}
 
-		final double tu = (u * intervals) / (double)(auxTarget.getCurrentWidth()  - 1) + 1.0F;
-		final double tv = (v * intervals) / (double)(auxTarget.getCurrentHeight() - 1) + 1.0F;
+		// read subsampling factor
+		final double samplingFactor = source.getSubsamplingFactor();
+		
+		final double tu = (u / samplingFactor * intervals) 
+							/ (double)(auxTarget.getCurrentWidth()  - 1) + 1.0F;
+		final double tv = (v / samplingFactor * intervals) 
+							/ (double)(auxTarget.getCurrentHeight() - 1) + 1.0F;
 
 		final boolean ORIGINAL = false;
 		swx.prepareForInterpolation(tu,tv,ORIGINAL);
-		xyF[0] = swx.interpolateI();
+		xyF[0] = swx.interpolateI() * samplingFactor;
 		swy.prepareForInterpolation(tu,tv,ORIGINAL);
-		xyF[1] = swy.interpolateI();
+		xyF[1] = swy.interpolateI() * samplingFactor;
 	}
 
 	/*....................................................................
