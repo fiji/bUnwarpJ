@@ -18,6 +18,23 @@
 	<name>plugins/bUnwarpJ_.jar</name>
 	<description></description>
 
+	<developers>
+		<developer>
+			<id>iarganda</id>
+			<name>Ignacio Arganda-Carreras</name>
+			<email>ignacio.arganda@gmail.com</email>
+			<url>http://biocomp.cnb.csic.es/~iarganda/index_EN.html</url>
+			<organization>INRA</organization>
+			<organizationUrl>http://www-ijpb.versailles.inra.fr/en/bc/equipes/modelisation-imagerie/</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+				<role>maintainer</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
+	</developers>
+
 	<scm>
 		<connection>scm:git:git://github.com/fiji/bUnwarpJ</connection>
 		<developerConnection>scm:git:git@github.com:fiji/bUnwarpJ</developerConnection>
