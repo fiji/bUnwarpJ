@@ -23,6 +23,7 @@ package bunwarpj;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.io.OpenDialog;
@@ -3236,6 +3237,56 @@ public class MiscTools
 			source.setInterpolationMethod( ImageProcessor.BILINEAR );
 			return source.resize( Math.round( scale * source.getWidth() ) );
 		}
+	}
+	
+	/**
+	 * Apply transform saved on a file to all slices of moving image
+	 * 
+	 * @param transformationFile elastic transform file
+	 * @param fixedImage fixed image
+	 * @param movingStack stack containing all the moving images
+	 * @return stack containing the deformed slices
+	 */
+	public static ImagePlus applyTransformToStack(
+			String transformationFile,
+			ImagePlus fixedImage,
+			ImagePlus movingStack )
+	{
+
+		// read number of intervals from transformation file
+		final int intervals = 
+			MiscTools.numberOfIntervalsOfTransformation( transformationFile );
+
+		// declare arrays of coefficients
+		final double[][] cx = new double[ intervals + 3 ][ intervals + 3 ];
+		final double[][] cy = new double[ intervals + 3 ][ intervals + 3 ];
+
+		// read coefficients
+		MiscTools.loadTransformation( transformationFile, cx, cy );
+
+		ImageStack outputStack = 
+			new ImageStack( movingStack.getWidth(), movingStack.getHeight() );
+
+		// apply transform to each slice of the stack
+
+		for( int i=1; i<=movingStack.getImageStackSize(); i++ )
+		{
+			ImageProcessor ip = movingStack.getImageStack().getProcessor( i );
+
+			BSplineModel source = new BSplineModel( ip, false, 1 );
+
+			ImagePlus movingImage = new ImagePlus("", ip );			
+				
+			ImageProcessor result = 
+					MiscTools.applyTransformationMT( 
+						movingImage, fixedImage, source, intervals, cx, cy );
+
+			outputStack.addSlice( "", result );
+		}
+
+		// return results
+		return new ImagePlus( 
+				movingStack.getTitle() +"-deformed", outputStack );
 	}
 	
 } /* End of MiscTools class */
