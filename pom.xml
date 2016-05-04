@@ -22,8 +22,7 @@
 		<developer>
 			<id>iarganda</id>
 			<name>Ignacio Arganda-Carreras</name>
-			<email>iargandacarreras@gmail.com</email>
-			<url>https://sites.google.com/site/iargandacarreras/</url>
+			<url>http://imagej.net/User:Iarganda</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -32,7 +31,6 @@
 				<role>support</role>
 				<role>maintainer</role>
 			</roles>
-			<timezone>-6</timezone>
 		</developer>
 		<developer>
 			<id>ctrueden</id>
