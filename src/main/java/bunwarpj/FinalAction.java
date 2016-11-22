@@ -1,5 +1,8 @@
 package bunwarpj;
 
+import java.awt.Point;
+import java.util.Stack;
+
 /**
  * bUnwarpJ plugin for ImageJ/Fiji.
  * Copyright (C) 2005-2010 Ignacio Arganda-Carreras and Jan Kybic 
@@ -147,8 +150,30 @@ public class FinalAction implements Runnable
         // If mono mode, reset consistency weight
         if(this.accurate_mode == MainDialog.MONO_MODE)
         	this.consistencyWeight = 0.0;
-        
-        //IJ.log("FinalAction: maxImageSubsamplingFactor = " + maxImageSubsamplingFactor);
+
+        // When called from macro, check if landmarks need to
+        // be loaded.
+        if( this.dialog.isMacroCall() )
+	{
+	    final int i0 = dialog.getMacroArgs().indexOf("load=");
+	    if (i0 != -1) {
+		final int i1 = dialog.getMacroArgs().indexOf(" ", i0 + 5);
+		String filename = dialog.getMacroArgs().substring(i0 + 5, i1);
+		Stack<Point> sourceStack = new Stack<Point>();
+		Stack<Point> targetStack = new Stack<Point>();
+		MiscTools.loadPoints(filename, sourceStack, targetStack);
+		sourcePh = new PointHandler(sourceImp);
+		targetPh = new PointHandler(targetImp);
+
+		while (!sourceStack.empty() && !targetStack.empty())
+		{
+		    Point sourcePoint = (Point) sourceStack.pop();
+		    Point targetPoint = (Point) targetStack.pop();
+		    sourcePh.addPoint(sourcePoint.x, sourcePoint.y);
+		    targetPh.addPoint(targetPoint.x, targetPoint.y);
+		}
+	    }
+        }
         
         // Prepare registration parameters
         final Transformation warp = new Transformation(
@@ -162,9 +187,9 @@ public class FinalAction implements Runnable
         
         // Perform the registration
         IJ.showStatus("Registering...");
-        
+
         long start = System.currentTimeMillis(); // start timing
-        
+
         if(this.accurate_mode == MainDialog.MONO_MODE)     
         {
         	// Do unidirectional registration
