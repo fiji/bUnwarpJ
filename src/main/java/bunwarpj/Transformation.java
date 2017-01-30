@@ -5298,9 +5298,6 @@ public class Transformation
 
 			// We will use threads to display parts of the output image
 			int block_height = auxTargetHeight / nproc;
-			if (auxTargetHeight % 2 != 0) 
-				block_height++;
-			
 			
 			int nThreads = nproc; /*(nproc > 1) ? (nproc / 2) : 1;
 			if (this.accurate_mode == MainDialog.MONO_MODE)
@@ -5398,9 +5395,6 @@ public class Transformation
 
 			// We will use threads to display parts of the output image
 			int block_height = auxTargetHeight / nproc;
-			if (auxTargetHeight % 2 != 0) 
-				block_height++;
-			
 			
 			int nThreads = nproc; /*(nproc > 1) ? (nproc / 2) : 1;
 			if (this.accurate_mode == MainDialog.MONO_MODE)
@@ -6122,10 +6116,7 @@ public class Transformation
 
 		// We will use threads to display parts of the output image
 		int block_height = auxTargetHeight / ((int)subFactorHeight * nproc);
-		if (auxTargetHeight % 2 != 0) 
-			block_height++;
-		
-		
+
 		int nThreads = nproc; /*(nproc > 1) ? (nproc / 2) : 1;
 		if (this.accurate_mode == MainDialog.MONO_MODE)
 			nThreads *= 2;*/
@@ -6564,9 +6555,7 @@ public class Transformation
 			// We will use threads to calculate the similarity of the different 
 			// parts of the target and source image
 			int block_height = auxTargetCurrentHeight / nproc;
-			if (auxTargetCurrentHeight % 2 != 0) 
-				block_height++;
-			
+
 			// We use as many threads as processors
 			final int nThreads = nproc; 
 			
@@ -6591,8 +6580,7 @@ public class Transformation
 				
 				// Corresponding rectangle
 				rects[i] = new Rectangle(0, y_start, auxTargetCurrentWidth, block_height);
-				
-				
+
 				// Create threads and start them.
 				threads[i] = new Thread(new EvaluateSimilarityTile(auxTarget, auxSource, auxTargetMsk,
 							   										auxSourceMsk, swx, swy, auxFactorWidth, auxFactorHeight,
@@ -6982,13 +6970,8 @@ public class Transformation
 		// We will use threads to calculate the similarity of the different 
 		// parts of the target and source image
 		int block_height_target = this.targetCurrentHeight / nproc;
-		if (this.targetCurrentHeight % 2 != 0) 
-			block_height_target++;
-		
 		int block_height_source = this.sourceCurrentHeight / nproc;
-		if (this.sourceCurrentHeight % 2 != 0) 
-			block_height_source++;
-		
+
 		// We use as many threads as processors
 		final int nThreads = nproc; 
 		
@@ -7020,9 +7003,9 @@ public class Transformation
 			}
 			
 			// Corresponding rectangles
-			rect_target[i] = new Rectangle(0, y_start_target, this.targetCurrentHeight, block_height_target);
-			rect_source[i] = new Rectangle(0, y_start_source, this.sourceCurrentHeight, block_height_source);
-			
+			rect_target[i] = new Rectangle(0, y_start_target, this.targetCurrentWidth, block_height_target);
+			rect_source[i] = new Rectangle(0, y_start_source, this.sourceCurrentWidth, block_height_source);
+
 			// Create threads and start them.
 			threads[i] = new Thread(new EvaluateConsistencyTile(this, grad_direct[i], grad_inverse[i], result[i],
 						   										rect_target[i], rect_source[i]));
