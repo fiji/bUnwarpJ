@@ -124,10 +124,10 @@ public class MiscTools
 					if (x>=0 && x<sourceWidth && y>=0 && y<sourceHeight)
 					{
 						source.prepareForInterpolation(x, y, ORIGINAL);
-						fp.putPixelValue(u, v, source.interpolateI());
+						fp.setf(u, v, (float) source.interpolateI());
 					}
 					else
-						fp.putPixelValue(u, v, 0);
+						fp.setf(u, v, 0f);
 				}
 			fp.resetMinAndMax();
 			sourceImp.setProcessor(sourceImp.getTitle(), fp);
@@ -171,19 +171,19 @@ public class MiscTools
 					if (x>=0 && x<sourceWidth && y>=0 && y<sourceHeight)
 					{                	 
 						sourceR.prepareForInterpolation(x, y, ORIGINAL);
-						fpR.putPixelValue(u, v, sourceR.interpolateI());
+						fpR.setf(u, v, (float) sourceR.interpolateI());
 
 						sourceG.prepareForInterpolation(x, y, ORIGINAL);
-						fpG.putPixelValue(u, v, sourceG.interpolateI());
+						fpG.setf(u, v, (float) sourceG.interpolateI());
 
 						sourceB.prepareForInterpolation(x, y, ORIGINAL);
-						fpB.putPixelValue(u, v, sourceB.interpolateI());                 
+						fpB.setf(u, v, (float) sourceB.interpolateI());                 
 					}
 					else
 					{
-						fpR.putPixelValue(u, v, 0);
-						fpG.putPixelValue(u, v, 0);
-						fpB.putPixelValue(u, v, 0);
+						fpR.setf(u, v, 0f);
+						fpG.setf(u, v, 0f);
+						fpB.setf(u, v, 0f);
 					}
 				}
 			cp.setPixels(0, fpR);
@@ -267,19 +267,19 @@ public class MiscTools
 				if (x>=0 && x<sourceWidth && y>=0 && y<sourceHeight)
 				{                	 
 					sourceR.prepareForInterpolation(x, y, ORIGINAL);
-					fpR.putPixelValue(u, v, sourceR.interpolateI());
+					fpR.setf(u, v, (float) sourceR.interpolateI());
 
 					sourceG.prepareForInterpolation(x, y, ORIGINAL);
-					fpG.putPixelValue(u, v, sourceG.interpolateI());
+					fpG.setf(u, v, (float) sourceG.interpolateI());
 
 					sourceB.prepareForInterpolation(x, y, ORIGINAL);
-					fpB.putPixelValue(u, v, sourceB.interpolateI());                 
+					fpB.setf(u, v, (float) sourceB.interpolateI());                 
 				}
 				else
 				{
-					fpR.putPixelValue(u, v, 0);
-					fpG.putPixelValue(u, v, 0);
-					fpB.putPixelValue(u, v, 0);
+					fpR.setf(u, v, 0f);
+					fpG.setf(u, v, 0f);
+					fpB.setf(u, v, 0f);
 				}
 			}
 		cp.setPixels(0, fpR);
@@ -340,10 +340,10 @@ public class MiscTools
 					if (x>=0 && x<sourceWidth && y>=0 && y<sourceHeight)
 					{
 						source.prepareForInterpolation(x, y, ORIGINAL);
-						fp.putPixelValue(u, v, source.interpolateI());
+						fp.setf(u, v, (float) source.interpolateI());
 					}
 					else
-						fp.putPixelValue(u, v, 0);
+						fp.setf(u, v, 0f);
 				}
 			fp.resetMinAndMax();
 			sourceImp.setProcessor(sourceImp.getTitle(), fp);
@@ -392,19 +392,19 @@ public class MiscTools
 					if (x>=0 && x<sourceWidth && y>=0 && y<sourceHeight)
 					{                	 
 						sourceR.prepareForInterpolation(x, y, ORIGINAL);
-						fpR.putPixelValue(u, v, sourceR.interpolateI());
+						fpR.setf(u, v, (float) sourceR.interpolateI());
 
 						sourceG.prepareForInterpolation(x, y, ORIGINAL);
-						fpG.putPixelValue(u, v, sourceG.interpolateI());
+						fpG.setf(u, v, (float) sourceG.interpolateI());
 
 						sourceB.prepareForInterpolation(x, y, ORIGINAL);
-						fpB.putPixelValue(u, v, sourceB.interpolateI());                 
+						fpB.setf(u, v, (float) sourceB.interpolateI());                 
 					}
 					else
 					{
-						fpR.putPixelValue(u, v, 0);
-						fpG.putPixelValue(u, v, 0);
-						fpB.putPixelValue(u, v, 0);
+						fpR.setf(u, v, 0f);
+						fpG.setf(u, v, 0f);
+						fpB.setf(u, v, 0f);
 					}
 				}
 			cp.setPixels(0, fpR);
@@ -2629,7 +2629,7 @@ public class MiscTools
 		int ij=0;
 		for (int i=0; i<Ydim; i++)
 			for (int j=0; j<Xdim; j++, ij++)
-				fp.putPixelValue(j,i,array[ij]);
+				fp.setf(j,i, (float) array[ij]);
 		fp.resetMinAndMax();
 		final ImagePlus      ip=new ImagePlus(title, fp);
 		ip.updateImage();
@@ -2653,7 +2653,7 @@ public class MiscTools
 		final FloatProcessor fp=new FloatProcessor(Xdim,Ydim);
 		for (int i=0; i<Ydim; i++)
 			for (int j=0; j<Xdim; j++)
-				fp.putPixelValue(j,i,array[i][j]);
+				fp.setf(j,i, (float) array[i][j]);
 		fp.resetMinAndMax();
 		final ImagePlus      ip=new ImagePlus(title, fp);
 		ip.updateImage();

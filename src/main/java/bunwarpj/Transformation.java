@@ -5067,7 +5067,7 @@ public class Transformation
 		FloatProcessor fp=new FloatProcessor(auxTargetCurrentWidth, auxTargetCurrentHeight);
 		for (int v=0; v<auxTargetCurrentHeight; v++)
 			for (int u=0; u<auxTargetCurrentWidth; u++)
-				fp.putPixelValue(u, v, transformedImage[v][u]);
+				fp.setf(u, v, (float) transformedImage[v][u]);
 
 		// Gray scale images
 		if(!(this.originalSourceIP instanceof ColorProcessor))
@@ -5143,7 +5143,7 @@ public class Transformation
 		FloatProcessor fp=new FloatProcessor(auxTargetCurrentWidth,auxTargetCurrentHeight);
 		for (int v=0; v<auxTargetCurrentHeight; v++)
 			for (int u=0; u<auxTargetCurrentWidth; u++)
-				fp.putPixelValue(u, v, transformedImage[v][u]);
+				fp.setf(u, v, (float) transformedImage[v][u]);
 
 		// Gray scale images
 		if(!(this.originalSourceIP instanceof ColorProcessor))
@@ -5719,7 +5719,7 @@ public class Transformation
 						//fpB.putPixelValue(u, v, 0);
 						fpB_array[u_rect + v_offset] = 0;
 						
-						cp_mask.putPixelValue(u_rect, v_rect, 0);	
+						cp_mask.setf(u_rect, v_rect, 0f);	
 						
 					}
 					else
@@ -5752,7 +5752,7 @@ public class Transformation
 							//fpB.putPixelValue(u, v, 0);
 							fpB_array[u_rect + v_offset] = 0;						
 							
-							cp_mask.putPixelValue(u_rect, v_rect, 0);
+							cp_mask.setf(u_rect, v_rect, 0f);
 						}
 					}
 				}
@@ -5948,7 +5948,7 @@ public class Transformation
 						//fpB.putPixelValue(u, v, 0);
 						fpB_array[u + v_offset] = 0;
 						
-						cp_mask.putPixelValue(u,v,0);						
+						cp_mask.setf(u,v,0f);						
 					}
 					else 
 					{
@@ -5969,7 +5969,7 @@ public class Transformation
 							//fpB.putPixelValue(u, v, sourceB.interpolateI());
 							fpB_array[u + v_offset] = (float) sourceB.interpolateI();
 							
-							cp_mask.putPixelValue(u,v,255);							
+							cp_mask.setf(u,v,255f);							
 						}
 						else
 						{
@@ -5980,7 +5980,7 @@ public class Transformation
 							//fpB.putPixelValue(u, v, 0);
 							fpB_array[u + v_offset] = 0;						
 							
-							cp_mask.putPixelValue(u,v,0);							
+							cp_mask.setf(u,v,0f);							
 						}
 					}
 				}
@@ -6270,7 +6270,7 @@ public class Transformation
 		FloatProcessor fpg=new FloatProcessor(auxSourceWidth, auxSourceHeight);
 		for (int v=0; v<auxSourceHeight; v++)
 			for (int u=0; u<auxSourceWidth; u++)
-				fpg.putPixelValue(u,v,transformedImage[v][u]);
+				fpg.setf(u,v, (float) transformedImage[v][u]);
 		
 		min_val = auxSourceImp.getProcessor().getMin();
 		max_val = auxSourceImp.getProcessor().getMax();
