@@ -417,7 +417,47 @@ public class MiscTools
 		} // end calculating warped color image
 
 	}
-
+	/**
+	 * Approximate the transformed coordinates of a point from the
+	 * moving image into the fixed image. Notice the raw transform
+	 * stores for each fixed image position the coordinates of the
+	 * corresponding moving pixel to fill it in. Therefore the new
+	 * position of the moving (source) point in fixed (target) space
+	 * can be approximated by finding the closest point in the
+	 * transform.
+	 *
+	 * @param movingCoords point coordinates in moving space
+	 * @param fixedImp fixed (source) image
+	 * @param transformation_x raw transform x-coordinates
+	 * @param transformation_y raw transform y-coordinates
+	 * @return approximated position of the point after transformation
+	 */
+	public static double[] approximateInverseCoords(
+		double[] movingCoords,
+		ImagePlus fixedImp,
+		double [][] transformation_x,
+		double [][] transformation_y
+		)
+	{
+	    double[] coords = new double[2];
+	    double minDistance = Double.MAX_VALUE;
+	    for (int v=0; v<fixedImp.getHeight(); v++)
+		for (int u=0; u<fixedImp.getWidth(); u++)
+		{
+		    final double x = transformation_x[v][u];
+		    final double y = transformation_y[v][u];
+		    final double xdiff = x-movingCoords[0];
+		    final double ydiff = y-movingCoords[1];
+		    final double dist = Math.sqrt(xdiff*xdiff+ydiff*ydiff);
+		    if( dist < minDistance )
+		    {
+			minDistance = dist;
+			coords[0] = u;
+			coords[1] = v;
+		    }
+		}
+	    return coords;
+	}
 
 	/**
 	 * Calculate the warping index between two opposite elastic deformations.
