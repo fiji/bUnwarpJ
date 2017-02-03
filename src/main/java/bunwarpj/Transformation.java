@@ -5067,7 +5067,7 @@ public class Transformation
 		FloatProcessor fp=new FloatProcessor(auxTargetCurrentWidth, auxTargetCurrentHeight);
 		for (int v=0; v<auxTargetCurrentHeight; v++)
 			for (int u=0; u<auxTargetCurrentWidth; u++)
-				fp.putPixelValue(u, v, transformedImage[v][u]);
+				fp.setf(u, v, (float) transformedImage[v][u]);
 
 		// Gray scale images
 		if(!(this.originalSourceIP instanceof ColorProcessor))
@@ -5143,7 +5143,7 @@ public class Transformation
 		FloatProcessor fp=new FloatProcessor(auxTargetCurrentWidth,auxTargetCurrentHeight);
 		for (int v=0; v<auxTargetCurrentHeight; v++)
 			for (int u=0; u<auxTargetCurrentWidth; u++)
-				fp.putPixelValue(u, v, transformedImage[v][u]);
+				fp.setf(u, v, (float) transformedImage[v][u]);
 
 		// Gray scale images
 		if(!(this.originalSourceIP instanceof ColorProcessor))
@@ -5298,9 +5298,6 @@ public class Transformation
 
 			// We will use threads to display parts of the output image
 			int block_height = auxTargetHeight / nproc;
-			if (auxTargetHeight % 2 != 0) 
-				block_height++;
-			
 			
 			int nThreads = nproc; /*(nproc > 1) ? (nproc / 2) : 1;
 			if (this.accurate_mode == MainDialog.MONO_MODE)
@@ -5398,9 +5395,6 @@ public class Transformation
 
 			// We will use threads to display parts of the output image
 			int block_height = auxTargetHeight / nproc;
-			if (auxTargetHeight % 2 != 0) 
-				block_height++;
-			
 			
 			int nThreads = nproc; /*(nproc > 1) ? (nproc / 2) : 1;
 			if (this.accurate_mode == MainDialog.MONO_MODE)
@@ -5719,7 +5713,7 @@ public class Transformation
 						//fpB.putPixelValue(u, v, 0);
 						fpB_array[u_rect + v_offset] = 0;
 						
-						cp_mask.putPixelValue(u_rect, v_rect, 0);	
+						cp_mask.setf(u_rect, v_rect, 0f);	
 						
 					}
 					else
@@ -5752,7 +5746,7 @@ public class Transformation
 							//fpB.putPixelValue(u, v, 0);
 							fpB_array[u_rect + v_offset] = 0;						
 							
-							cp_mask.putPixelValue(u_rect, v_rect, 0);
+							cp_mask.setf(u_rect, v_rect, 0f);
 						}
 					}
 				}
@@ -5948,7 +5942,7 @@ public class Transformation
 						//fpB.putPixelValue(u, v, 0);
 						fpB_array[u + v_offset] = 0;
 						
-						cp_mask.putPixelValue(u,v,0);						
+						cp_mask.setf(u,v,0f);						
 					}
 					else 
 					{
@@ -5969,7 +5963,7 @@ public class Transformation
 							//fpB.putPixelValue(u, v, sourceB.interpolateI());
 							fpB_array[u + v_offset] = (float) sourceB.interpolateI();
 							
-							cp_mask.putPixelValue(u,v,255);							
+							cp_mask.setf(u,v,255f);							
 						}
 						else
 						{
@@ -5980,7 +5974,7 @@ public class Transformation
 							//fpB.putPixelValue(u, v, 0);
 							fpB_array[u + v_offset] = 0;						
 							
-							cp_mask.putPixelValue(u,v,0);							
+							cp_mask.setf(u,v,0f);							
 						}
 					}
 				}
@@ -6122,10 +6116,7 @@ public class Transformation
 
 		// We will use threads to display parts of the output image
 		int block_height = auxTargetHeight / ((int)subFactorHeight * nproc);
-		if (auxTargetHeight % 2 != 0) 
-			block_height++;
-		
-		
+
 		int nThreads = nproc; /*(nproc > 1) ? (nproc / 2) : 1;
 		if (this.accurate_mode == MainDialog.MONO_MODE)
 			nThreads *= 2;*/
@@ -6270,7 +6261,7 @@ public class Transformation
 		FloatProcessor fpg=new FloatProcessor(auxSourceWidth, auxSourceHeight);
 		for (int v=0; v<auxSourceHeight; v++)
 			for (int u=0; u<auxSourceWidth; u++)
-				fpg.putPixelValue(u,v,transformedImage[v][u]);
+				fpg.setf(u,v, (float) transformedImage[v][u]);
 		
 		min_val = auxSourceImp.getProcessor().getMin();
 		max_val = auxSourceImp.getProcessor().getMax();
@@ -6564,9 +6555,7 @@ public class Transformation
 			// We will use threads to calculate the similarity of the different 
 			// parts of the target and source image
 			int block_height = auxTargetCurrentHeight / nproc;
-			if (auxTargetCurrentHeight % 2 != 0) 
-				block_height++;
-			
+
 			// We use as many threads as processors
 			final int nThreads = nproc; 
 			
@@ -6591,8 +6580,7 @@ public class Transformation
 				
 				// Corresponding rectangle
 				rects[i] = new Rectangle(0, y_start, auxTargetCurrentWidth, block_height);
-				
-				
+
 				// Create threads and start them.
 				threads[i] = new Thread(new EvaluateSimilarityTile(auxTarget, auxSource, auxTargetMsk,
 							   										auxSourceMsk, swx, swy, auxFactorWidth, auxFactorHeight,
@@ -6982,13 +6970,8 @@ public class Transformation
 		// We will use threads to calculate the similarity of the different 
 		// parts of the target and source image
 		int block_height_target = this.targetCurrentHeight / nproc;
-		if (this.targetCurrentHeight % 2 != 0) 
-			block_height_target++;
-		
 		int block_height_source = this.sourceCurrentHeight / nproc;
-		if (this.sourceCurrentHeight % 2 != 0) 
-			block_height_source++;
-		
+
 		// We use as many threads as processors
 		final int nThreads = nproc; 
 		
@@ -7020,9 +7003,9 @@ public class Transformation
 			}
 			
 			// Corresponding rectangles
-			rect_target[i] = new Rectangle(0, y_start_target, this.targetCurrentHeight, block_height_target);
-			rect_source[i] = new Rectangle(0, y_start_source, this.sourceCurrentHeight, block_height_source);
-			
+			rect_target[i] = new Rectangle(0, y_start_target, this.targetCurrentWidth, block_height_target);
+			rect_source[i] = new Rectangle(0, y_start_source, this.sourceCurrentWidth, block_height_source);
+
 			// Create threads and start them.
 			threads[i] = new Thread(new EvaluateConsistencyTile(this, grad_direct[i], grad_inverse[i], result[i],
 						   										rect_target[i], rect_source[i]));
