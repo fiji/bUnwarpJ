@@ -25,11 +25,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.io.OpenDialog;
 import ij.io.SaveDialog;
-import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
-import ij.process.FloatProcessor;
-import ij.process.ImageProcessor;
-import ij.process.ShortProcessor;
+import ij.plugin.frame.Recorder;
 
 import java.awt.Button;
 import java.awt.Dialog;
@@ -53,6 +49,10 @@ import javax.swing.JOptionPane;
  */
 public class IODialog extends Dialog implements ActionListener
 { /* begin class IODialog */
+
+	// Macro recording constants (corresponding to
+	// static method names to be called)
+	public static final String EVALUATE_SIMILARITY = "evaluateImageSimilarity";
 
 	/*....................................................................
        Private variables
@@ -885,123 +885,10 @@ public class IODialog extends Dialog implements ActionListener
 	 */
 	private void evaluateSimilarity ()
 	{
-
-		// Source image
-		int k=0;
-		ImageProcessor sourceIp = this.sourceImp.getProcessor();    	
-
-		int sourceHeight = sourceIp.getHeight();
-		int sourceWidth  = sourceIp.getWidth ();
-
-		// Target image
-		ImageProcessor targetIp = this.targetImp.getProcessor();
-
-		int targetHeight = targetIp.getHeight();
-		int targetWidth  = targetIp.getWidth ();
-
-		if(sourceHeight != targetHeight || sourceWidth != targetWidth)
-		{
-			IJ.error("Error: source and target dimensions do not match!");
-			return;
-		}
-
-		// Read source pixel values.
-		double [] sourceImage = new double[sourceHeight * sourceWidth];
-
-		if (sourceIp instanceof ByteProcessor) 
-		{
-			final byte[] pixels = (byte[])sourceIp.getPixels();
-			for (int y = 0; (y < sourceHeight); y++)
-				for (int x = 0; (x < sourceWidth); x++, k++)
-					sourceImage[k] = (double)(pixels[k] & 0xFF);
-		} 
-		else if (sourceIp instanceof ShortProcessor) 
-		{
-			final short[] pixels = (short[])sourceIp.getPixels();
-			for (int y = 0; (y < sourceHeight); y++)
-				for (int x = 0; (x < sourceWidth); x++, k++)
-					if (pixels[k] < (short)0) sourceImage[k] = (double)pixels[k] + 65536.0F;
-					else                      sourceImage[k] = (double)pixels[k];
-		} 
-		else if (sourceIp instanceof FloatProcessor) 
-		{
-			final float[] pixels = (float[])sourceIp.getPixels();
-			for (int p = 0; p<sourceHeight*sourceWidth; p++)
-				sourceImage[p]=pixels[p];
-		}
-		else if (sourceIp instanceof ColorProcessor)
-		{
-			ImageProcessor fp = sourceIp.convertToFloat();
-			final float[] pixels = (float[])fp.getPixels();
-			for (int p = 0; p<sourceHeight*sourceWidth; p++)
-				sourceImage[p] = pixels[p];    	  
-		}
-
-		// Read target pixel values.
-		k=0;    	
-
-		double [] targetImage = new double[targetHeight * targetWidth];
-
-		if (targetIp instanceof ByteProcessor) 
-		{
-			final byte[] pixels = (byte[])targetIp.getPixels();
-			for (int y = 0; (y < targetHeight); y++)
-				for (int x = 0; (x < targetWidth); x++, k++)
-					targetImage[k] = (double)(pixels[k] & 0xFF);
-		} 
-		else if (targetIp instanceof ShortProcessor) 
-		{
-			final short[] pixels = (short[])targetIp.getPixels();
-			for (int y = 0; (y < targetHeight); y++)
-				for (int x = 0; (x < targetWidth); x++, k++)
-					if (pixels[k] < (short)0) targetImage[k] = (double)pixels[k] + 65536.0F;
-					else                      targetImage[k] = (double)pixels[k];
-		} 
-		else if (targetIp instanceof FloatProcessor) 
-		{
-			final float[] pixels = (float[])targetIp.getPixels();
-			for (int p = 0; p<targetHeight*targetWidth; p++)
-				targetImage[p]=pixels[p];
-		}
-		else if (targetIp instanceof ColorProcessor)
-		{
-			ImageProcessor fp = targetIp.convertToFloat();
-			final float[] pixels = (float[])fp.getPixels();
-			for (int p = 0; p<targetHeight*targetWidth; p++)
-				targetImage[p] = pixels[p];    	  
-		}
-
-		double imageSimilarity = 0;
-		int n = 0;
-
-		Mask targetMsk = this.dialog.getTargetMask();
-
-		for (int v=0; v < this.targetImp.getHeight(); v++)
-		{
-			for (int u=0; u<this.targetImp.getWidth(); u++)
-			{
-				if (targetMsk.getValue(u, v))
-				{
-					// Compute image term .....................................................
-					double I2 = targetImage[v*targetWidth + u];
-					double I1 = sourceImage[v*targetWidth + u];
-
-
-					double error = I2 - I1;
-					double error2 = error*error;
-
-					imageSimilarity += error2;
-					n++;
-				}
-			}
-		}
-
-		if(n != 0)
-			IJ.log(" Image similarity = " + (imageSimilarity / n) + ", n = " + n);
-		else
-			IJ.log(" Error: not a single pixel was evaluated ");
-
-
+		if( MiscTools.imageSimilarity( targetImp, sourceImp,
+				dialog.getTargetMask(), true ) != -1 )
+			record( IODialog.EVALUATE_SIMILARITY, targetImp.getTitle(),
+					sourceImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/
@@ -1107,6 +994,30 @@ public class IODialog extends Dialog implements ActionListener
 			IJ.getTextPanel().append(n + "\t" + xSource + "\t" + ySource + "\t" + xTarget + "\t" + yTarget);
 		}
 	} /* end showPoints */
+
+	/* **********************************************************
+	 * Macro recording related methods
+	 * *********************************************************/
+
+	/**
+	 * Macro-record a specific command. The command names match the static
+	 * methods that reproduce that part of the code.
+	 *
+	 * @param command name of the command including package info
+	 * @param args set of arguments for the command
+	 */
+	public static void record(String command, String... args)
+	{
+		command = "call(\"bunwarpj.bUnwarpJ_." + command;
+		for(int i = 0; i < args.length; i++)
+			command += "\", \"" + args[i];
+		command += "\");\n";
+		// in Windows systems, replace backslashes by double ones
+		if( IJ.isWindows() )
+			command = command.replaceAll( "\\\\", "\\\\\\\\" );
+		if(Recorder.record)
+			Recorder.recordString(command);
+	}
 
 } /* end class IODialog */
 

@@ -2473,5 +2473,41 @@ public class bUnwarpJ_ implements PlugIn
     	adaptCoefficientsCommandLine(args);
     }
     /* end adaptCoefficientsMacro */     
-    
+
+    //------------------------------------------------------------------
+    // **** Methods corresponding to macro recorded actions ****
+    //------------------------------------------------------------------
+    /**
+     * Calculate image similarity between two images (target and source)
+     * @param targetImageName name of the target image
+     * @param sourceImageName name of the source image
+     */
+    public static void evaluateImageSimilarity(
+    		String targetImageName,
+    		String sourceImageName )
+    {
+    	final ImagePlus targetImp = WindowManager.getImage( targetImageName );
+    	if( null == targetImp )
+    	{
+    		IJ.log( "Error: missing target image: " + targetImageName );
+    		return;
+    	}
+    	final ImagePlus sourceImp = WindowManager.getImage( sourceImageName );
+    	if( null == sourceImp )
+    	{
+    		IJ.log( "Error: missing source image: " + sourceImageName );
+    		return;
+    	}
+    	// calculate mask
+    	final Mask targetMsk;
+    	if ( targetImp.getImageStackSize()==1 )
+    		targetMsk = null;
+    	else
+    		// Take the mask from the second slice
+    		targetMsk = new Mask( targetImp.getImageStack().getProcessor( 2 ),
+    				true);
+    	// Calculate image similarity
+    	MiscTools.imageSimilarity( targetImp, sourceImp, targetMsk, true );
+    }
+
 } /* end class bUnwarpJ_ */

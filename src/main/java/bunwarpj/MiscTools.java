@@ -3328,5 +3328,141 @@ public class MiscTools
 		return new ImagePlus( 
 				movingStack.getTitle() +"-deformed", outputStack );
 	}
-	
+
+	/**
+	 * Calculate image similarity between two images (target and source)
+	 * @param targetImp target image
+	 * @param sourceImp source image
+	 * @param targetMsk target mask
+	 * @param verbose flag to display result in log window
+	 * @return image similarity value or -1 if error
+	 */
+	public static double imageSimilarity(
+			ImagePlus targetImp,
+			ImagePlus sourceImp,
+			Mask targetMsk,
+			boolean verbose )
+	{
+		// Source image
+		int k=0;
+		ImageProcessor sourceIp = sourceImp.getProcessor();
+
+		int sourceHeight = sourceIp.getHeight();
+		int sourceWidth  = sourceIp.getWidth ();
+
+		// Target image
+		ImageProcessor targetIp = targetImp.getProcessor();
+
+		int targetHeight = targetIp.getHeight();
+		int targetWidth  = targetIp.getWidth ();
+
+		if(sourceHeight != targetHeight || sourceWidth != targetWidth)
+		{
+			IJ.error("Error: source and target dimensions do not match!");
+			return -1;
+		}
+
+		// Read source pixel values.
+		double [] sourceImage = new double[sourceHeight * sourceWidth];
+
+		if (sourceIp instanceof ByteProcessor)
+		{
+			final byte[] pixels = (byte[])sourceIp.getPixels();
+			for (int y = 0; (y < sourceHeight); y++)
+				for (int x = 0; (x < sourceWidth); x++, k++)
+					sourceImage[k] = (double)(pixels[k] & 0xFF);
+		}
+		else if (sourceIp instanceof ShortProcessor)
+		{
+			final short[] pixels = (short[])sourceIp.getPixels();
+			for (int y = 0; (y < sourceHeight); y++)
+				for (int x = 0; (x < sourceWidth); x++, k++)
+					if (pixels[k] < (short)0) sourceImage[k] = (double)pixels[k] + 65536.0F;
+					else                      sourceImage[k] = (double)pixels[k];
+		}
+		else if (sourceIp instanceof FloatProcessor)
+		{
+			final float[] pixels = (float[])sourceIp.getPixels();
+			for (int p = 0; p<sourceHeight*sourceWidth; p++)
+				sourceImage[p]=pixels[p];
+		}
+		else if (sourceIp instanceof ColorProcessor)
+		{
+			ImageProcessor fp = sourceIp.convertToFloat();
+			final float[] pixels = (float[])fp.getPixels();
+			for (int p = 0; p<sourceHeight*sourceWidth; p++)
+				sourceImage[p] = pixels[p];
+		}
+
+		// Read target pixel values.
+		k=0;
+
+		double [] targetImage = new double[targetHeight * targetWidth];
+
+		if (targetIp instanceof ByteProcessor)
+		{
+			final byte[] pixels = (byte[])targetIp.getPixels();
+			for (int y = 0; (y < targetHeight); y++)
+				for (int x = 0; (x < targetWidth); x++, k++)
+					targetImage[k] = (double)(pixels[k] & 0xFF);
+		}
+		else if (targetIp instanceof ShortProcessor)
+		{
+			final short[] pixels = (short[])targetIp.getPixels();
+			for (int y = 0; (y < targetHeight); y++)
+				for (int x = 0; (x < targetWidth); x++, k++)
+					if (pixels[k] < (short)0) targetImage[k] = (double)pixels[k] + 65536.0F;
+					else                      targetImage[k] = (double)pixels[k];
+		}
+		else if (targetIp instanceof FloatProcessor)
+		{
+			final float[] pixels = (float[])targetIp.getPixels();
+			for (int p = 0; p<targetHeight*targetWidth; p++)
+				targetImage[p]=pixels[p];
+		}
+		else if (targetIp instanceof ColorProcessor)
+		{
+			ImageProcessor fp = targetIp.convertToFloat();
+			final float[] pixels = (float[])fp.getPixels();
+			for (int p = 0; p<targetHeight*targetWidth; p++)
+				targetImage[p] = pixels[p];
+		}
+
+		double imageSimilarity = 0;
+		int n = 0;
+
+		for (int v=0; v < targetImp.getHeight(); v++)
+		{
+			for (int u=0; u<targetImp.getWidth(); u++)
+			{
+				if ( null == targetMsk || targetMsk.getValue( u, v ) )
+				{
+					// Compute image term ......................
+					double I2 = targetImage[v*targetWidth + u];
+					double I1 = sourceImage[v*targetWidth + u];
+
+
+					double error = I2 - I1;
+					double error2 = error*error;
+
+					imageSimilarity += error2;
+					n++;
+				}
+			}
+		}
+
+		if(n != 0)
+		{
+			if( verbose )
+				IJ.log( " Image similarity = " + (imageSimilarity / n)
+						+ ", n = " + n );
+			return imageSimilarity / n;
+		}
+		else
+		{
+			if( verbose )
+				IJ.log( " Error: not a single pixel was evaluated " );
+			return -1;
+		}
+	}
 } /* End of MiscTools class */
