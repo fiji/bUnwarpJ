@@ -1,4 +1,4 @@
-[![](http://jenkins.imagej.net/job/bUnwarpJ/lastBuild/badge/icon)](http://jenkins.imagej.net/job/bUnwarpJ/)
+[![](https://travis-ci.org/fiji/bUnwarpJ.svg?branch=master)](https://travis-ci.org/fiji/bUnwarpJ)
 
 bUnwarpJ
 ========
