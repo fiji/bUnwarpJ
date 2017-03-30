@@ -29,7 +29,6 @@ import ij.plugin.frame.Recorder;
 
 import java.awt.Button;
 import java.awt.Dialog;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -56,6 +55,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String LOAD_LANDMARKS = "loadLandmarks";
 	/** bUnwarpJ_ method name to save landmarks to a file */
 	public static final String SAVE_LANDMARKS = "saveLandmarks";
+	/** bUnwarpJ_ method name to show landmarks on a table */
+	public static final String SHOW_LANDMARKS = "showLandmarks";
 
 	/*....................................................................
        Private variables
@@ -916,46 +917,15 @@ public class IODialog extends Dialog implements ActionListener
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Display the points over the images.
+	 * Display source and target landmark points on a results table.
 	 */
 	private void showPoints ()
 	{
 		final Vector <Point> sourceList = sourcePh.getPoints();
 		final Vector <Point> targetList = targetPh.getPoints();
-		Point sourcePoint;
-		Point targetPoint;
-		String n;
-		String xTarget;
-		String yTarget;
-		String xSource;
-		String ySource;
-		IJ.getTextPanel().setFont(new Font("Monospaced", Font.PLAIN, 12));
-		IJ.setColumnHeadings("Index\txSource\tySource\txTarget\tyTarget");
-		for (int k = 0; (k < sourceList.size()); k++) {
-			n = "" + k;
-			while (n.length() < 5) {
-				n = " " + n;
-			}
-			sourcePoint = (Point)sourceList.elementAt(k);
-			xTarget = "" + sourcePoint.x;
-			while (xTarget.length() < 7) {
-				xTarget = " " + xTarget;
-			}
-			yTarget = "" + sourcePoint.y;
-			while (yTarget.length() < 7) {
-				yTarget = " " + yTarget;
-			}
-			targetPoint = (Point)targetList.elementAt(k);
-			xSource = "" + targetPoint.x;
-			while (xSource.length() < 7) {
-				xSource = " " + xSource;
-			}
-			ySource = "" + targetPoint.y;
-			while (ySource.length() < 7) {
-				ySource = " " + ySource;
-			}
-			IJ.getTextPanel().append(n + "\t" + xSource + "\t" + ySource + "\t" + xTarget + "\t" + yTarget);
-		}
+		MiscTools.showPoints( sourceList, targetList );
+		// record macro call
+		record( IODialog.SHOW_LANDMARKS );
 	} /* end showPoints */
 
 	/* **********************************************************

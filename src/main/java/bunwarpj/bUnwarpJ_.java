@@ -2560,6 +2560,20 @@ public class bUnwarpJ_ implements PlugIn
     			md.getSourcePh().getPoints(), md.getTargetPh().getPoints() );
     }
     /**
+     * Show landmark points in a results window.
+     */
+    public static void showLandmarks()
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	MiscTools.showPoints( md.getSourcePh().getPoints(),
+    			md.getTargetPh().getPoints() );
+    }
+    /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
 	 */

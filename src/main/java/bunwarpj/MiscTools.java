@@ -34,6 +34,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
@@ -3523,5 +3524,49 @@ public class MiscTools
 			IJ.error("Security exception" + e);
 		}
 	}
-
+	/**
+	 * Display landmark points in a separate table
+	 * @param sourceList vector of source landmark points
+	 * @param targetList vector of target landmark points
+	 */
+	public static void showPoints(
+			final Vector<Point> sourceList,
+			final Vector<Point> targetList )
+	{
+		Point sourcePoint;
+		Point targetPoint;
+		String n;
+		String xTarget;
+		String yTarget;
+		String xSource;
+		String ySource;
+		IJ.getTextPanel().setFont(new Font("Monospaced", Font.PLAIN, 12));
+		IJ.setColumnHeadings("Index\txSource\tySource\txTarget\tyTarget");
+		for (int k = 0; (k < sourceList.size()); k++) {
+			n = "" + k;
+			while (n.length() < 5) {
+				n = " " + n;
+			}
+			sourcePoint = (Point)sourceList.elementAt(k);
+			xTarget = "" + sourcePoint.x;
+			while (xTarget.length() < 7) {
+				xTarget = " " + xTarget;
+			}
+			yTarget = "" + sourcePoint.y;
+			while (yTarget.length() < 7) {
+				yTarget = " " + yTarget;
+			}
+			targetPoint = (Point)targetList.elementAt(k);
+			xSource = "" + targetPoint.x;
+			while (xSource.length() < 7) {
+				xSource = " " + xSource;
+			}
+			ySource = "" + targetPoint.y;
+			while (ySource.length() < 7) {
+				ySource = " " + ySource;
+			}
+			IJ.getTextPanel().append( n + "\t" + xSource + "\t" + ySource +
+					"\t" + xTarget + "\t" + yTarget);
+		}
+	}
 } /* End of MiscTools class */
