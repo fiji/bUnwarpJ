@@ -37,8 +37,6 @@ import java.awt.Label;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -56,6 +54,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String EVALUATE_SIMILARITY = "evaluateImageSimilarity";
 	/** bUnwarpJ_ method name to load landmarks from file */
 	public static final String LOAD_LANDMARKS = "loadLandmarks";
+	/** bUnwarpJ_ method name to save landmarks to a file */
+	public static final String SAVE_LANDMARKS = "saveLandmarks";
 
 	/*....................................................................
        Private variables
@@ -908,52 +908,10 @@ public class IODialog extends Dialog implements ActionListener
 
 		final String path = sd.getDirectory();
 		filename = sd.getFileName();
-		if ((path == null) || (filename == null)) {
-			return;
-		}
-		try {
-			final FileWriter fw = new FileWriter(path + filename);
-			final Vector <Point> sourceList = sourcePh.getPoints();
-			final Vector <Point> targetList = targetPh.getPoints();
-			Point sourcePoint;
-			Point targetPoint;
-			String n;
-			String xSource;
-			String ySource;
-			String xTarget;
-			String yTarget;
-			fw.write("Index\txSource\tySource\txTarget\tyTarget\n");
-			for (int k = 0; (k < sourceList.size()); k++) {
-				n = "" + k;
-				while (n.length() < 5) {
-					n = " " + n;
-				}
-				sourcePoint = (Point)sourceList.elementAt(k);
-				xSource = "" + sourcePoint.x;
-				while (xSource.length() < 7) {
-					xSource = " " + xSource;
-				}
-				ySource = "" + sourcePoint.y;
-				while (ySource.length() < 7) {
-					ySource = " " + ySource;
-				}
-				targetPoint = (Point)targetList.elementAt(k);
-				xTarget = "" + targetPoint.x;
-				while (xTarget.length() < 7) {
-					xTarget = " " + xTarget;
-				}
-				yTarget = "" + targetPoint.y;
-				while (yTarget.length() < 7) {
-					yTarget = " " + yTarget;
-				}
-				fw.write(n + "\t" + xSource + "\t" + ySource + "\t" + xTarget + "\t" + yTarget + "\n");
-			}
-			fw.close();
-		} catch (IOException e) {
-			IJ.error("IOException exception" + e);
-		} catch (SecurityException e) {
-			IJ.error("Security exception" + e);
-		}
+		MiscTools.saveLandmarks( path + filename, sourcePh.getPoints(),
+				targetPh.getPoints() );
+		// record macro command
+		record( IODialog.SAVE_LANDMARKS, path + filename );
 	} /* end savePoints */
 
 	/*------------------------------------------------------------------*/

@@ -43,6 +43,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
  * Different tools for the bUnwarpJ interface.
@@ -3465,4 +3466,62 @@ public class MiscTools
 			return -1;
 		}
 	}
+	/**
+	 * Save source and target landmarks to file
+	 * @param outputPath complete output landmark path
+	 * @param sourceList vector of source landmark points
+	 * @param targetList vector of target landmark points
+	 */
+	public static void saveLandmarks(
+			final String outputPath,
+			final Vector <Point> sourceList,
+			final Vector <Point> targetList )
+	{
+		if ( null == outputPath ) {
+			return;
+		}
+		try {
+			final FileWriter fw = new FileWriter( outputPath );
+			Point sourcePoint;
+			Point targetPoint;
+			String n;
+			String xSource;
+			String ySource;
+			String xTarget;
+			String yTarget;
+			fw.write("Index\txSource\tySource\txTarget\tyTarget\n");
+			for (int k = 0; (k < sourceList.size()); k++) {
+				n = "" + k;
+				while (n.length() < 5) {
+					n = " " + n;
+				}
+				sourcePoint = (Point)sourceList.elementAt(k);
+				xSource = "" + sourcePoint.x;
+				while (xSource.length() < 7) {
+					xSource = " " + xSource;
+				}
+				ySource = "" + sourcePoint.y;
+				while (ySource.length() < 7) {
+					ySource = " " + ySource;
+				}
+				targetPoint = (Point)targetList.elementAt(k);
+				xTarget = "" + targetPoint.x;
+				while (xTarget.length() < 7) {
+					xTarget = " " + xTarget;
+				}
+				yTarget = "" + targetPoint.y;
+				while (yTarget.length() < 7) {
+					yTarget = " " + yTarget;
+				}
+				fw.write(n + "\t" + xSource + "\t" + ySource + "\t" + xTarget +
+						"\t" + yTarget + "\n");
+			}
+			fw.close();
+		} catch (IOException e) {
+			IJ.error("IOException exception" + e);
+		} catch (SecurityException e) {
+			IJ.error("Security exception" + e);
+		}
+	}
+
 } /* End of MiscTools class */

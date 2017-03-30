@@ -2544,7 +2544,21 @@ public class bUnwarpJ_ implements PlugIn
 			targetPh.addPoint( targetPoint.x, targetPoint.y );
 		}
     }
-
+    /**
+     * Save landmarks to file. Therefore, a bUnwarpJ dialog must exist.
+     * @param landmarksFilePath
+     */
+    public static void saveLandmarks( String landmarksFilePath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	MiscTools.saveLandmarks( landmarksFilePath,
+    			md.getSourcePh().getPoints(), md.getTargetPh().getPoints() );
+    }
     /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
