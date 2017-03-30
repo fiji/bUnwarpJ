@@ -2546,7 +2546,7 @@ public class bUnwarpJ_ implements PlugIn
     }
     /**
      * Save landmarks to file. Therefore, a bUnwarpJ dialog must exist.
-     * @param landmarksFilePath
+     * @param landmarksFilePath complete path to output landmark file
      */
     public static void saveLandmarks( String landmarksFilePath )
     {
