@@ -52,7 +52,10 @@ public class IODialog extends Dialog implements ActionListener
 
 	// Macro recording constants (corresponding to
 	// static method names to be called)
+	/** bUnwarpJ_ method name to evaluate similarity between two images */
 	public static final String EVALUATE_SIMILARITY = "evaluateImageSimilarity";
+	/** bUnwarpJ_ method name to load landmarks from file */
+	public static final String LOAD_LANDMARKS = "loadLandmarks";
 
 	/*....................................................................
        Private variables
@@ -252,7 +255,7 @@ public class IODialog extends Dialog implements ActionListener
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Load the points from the point handlers.
+	 * Load the landmark points from an user-defined filed.
 	 */
 	private void loadPoints ()
 	{
@@ -273,6 +276,8 @@ public class IODialog extends Dialog implements ActionListener
 			sourcePh.addPoint(sourcePoint.x, sourcePoint.y);
 			targetPh.addPoint(targetPoint.x, targetPoint.y);
 		}
+		// record macro command
+		record( IODialog.LOAD_LANDMARKS, path+filename );
 	} /* end loadPoints */
 
 

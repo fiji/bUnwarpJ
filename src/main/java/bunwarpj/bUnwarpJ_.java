@@ -41,7 +41,9 @@ import ij.io.Opener;
 import ij.plugin.PlugIn;
 import ij.process.ImageProcessor;
 
+import java.awt.Dialog;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.geom.AffineTransform;
 import java.util.Stack;
 
@@ -2509,5 +2511,53 @@ public class bUnwarpJ_ implements PlugIn
     	// Calculate image similarity
     	MiscTools.imageSimilarity( targetImp, sourceImp, targetMsk, true );
     }
+    /**
+     * Load landmarks from file into existing source and target images.
+     * Therefore, a bUnwarpJ dialog must exist.
+     *
+     * @param landmarksFilePath complete path to landmarks file
+     */
+    public static void loadLandmarks( String landmarksFilePath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
 
+    	// load both stacks of landmark points
+    	Stack <Point> sourceStack = new Stack <Point> ();
+		Stack <Point> targetStack = new Stack <Point> ();
+		MiscTools.loadPoints( landmarksFilePath, sourceStack, targetStack );
+
+		// add points to source and target images
+		final PointHandler sourcePh = md.getSourcePh();
+		final PointHandler targetPh = md.getTargetPh();
+		sourcePh.removePoints();
+		targetPh.removePoints();
+		while( !sourceStack.empty() && !targetStack.empty() )
+		{
+			Point sourcePoint = ( Point ) sourceStack.pop();
+			Point targetPoint = ( Point ) targetStack.pop();
+			sourcePh.addPoint( sourcePoint.x, sourcePoint.y );
+			targetPh.addPoint( targetPoint.x, targetPoint.y );
+		}
+    }
+
+    /**
+	 * Get bUnwarpJ main dialog (if exists)
+	 * @return bUnwarpJ main dialog or null if it does not exist
+	 */
+	public static MainDialog getMainDialog()
+	{
+		for( Window w : Dialog.getWindows() )
+			if( w instanceof MainDialog )
+			{
+				final MainDialog md = (MainDialog) w;
+				if( null != md.getSource() )
+					return md;
+			}
+		return null;
+	}
 } /* end class bUnwarpJ_ */
