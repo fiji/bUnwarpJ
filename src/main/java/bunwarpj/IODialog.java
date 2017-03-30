@@ -57,6 +57,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String SAVE_LANDMARKS = "saveLandmarks";
 	/** bUnwarpJ_ method name to show landmarks on a table */
 	public static final String SHOW_LANDMARKS = "showLandmarks";
+	/** bUnwarpJ_ method name to load an elastic transform */
+	public static final String LOAD_ELASTIC_TRANSF = "loadElasticTransform";
 
 	/*....................................................................
        Private variables
@@ -307,6 +309,8 @@ public class IODialog extends Dialog implements ActionListener
 
 		// Apply transformation
 		dialog.applyTransformationToSource(intervals, cx, cy);
+		// record macro call
+		record( IODialog.LOAD_ELASTIC_TRANSF, path + filename );
 	}
 
 	/*------------------------------------------------------------------*/

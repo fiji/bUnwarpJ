@@ -2574,6 +2574,31 @@ public class bUnwarpJ_ implements PlugIn
     			md.getTargetPh().getPoints() );
     }
     /**
+     * Load an elastic transform (bUnwarpJ format) from file and apply it to
+     * the current source image.
+     *
+     * @param transfPath complete path to elastic transform file
+     */
+    public static void loadElasticTransform( String transfPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	final int intervals =
+    			MiscTools.numberOfIntervalsOfTransformation( transfPath );
+
+		final double [][]cx = new double[ intervals + 3 ][ intervals + 3 ];
+		final double [][]cy = new double[ intervals + 3 ][ intervals + 3 ];
+
+		MiscTools.loadTransformation( transfPath, cx, cy );
+
+		// apply transformation
+		md.applyTransformationToSource( intervals, cx, cy );
+    }
+    /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
 	 */
