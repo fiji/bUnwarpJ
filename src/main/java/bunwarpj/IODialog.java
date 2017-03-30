@@ -59,6 +59,10 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String SHOW_LANDMARKS = "showLandmarks";
 	/** bUnwarpJ_ method name to load an elastic transform */
 	public static final String LOAD_ELASTIC_TRANSF = "loadElasticTransform";
+	/** bUnwarpJ_ method name to load a raw transform */
+	public static final String LOAD_RAW_TRANSF = "loadRawTransform";
+	/** bUnwarpJ_ method name to compare opposite elastic transforms */
+	public static final String COMPARE_OPPOSITE_ELASTIC = "compareOppositeElasticTransforms";
 
 	/*....................................................................
        Private variables
@@ -375,6 +379,8 @@ public class IODialog extends Dialog implements ActionListener
 
 		// Apply transformation
 		dialog.applyRawTransformationToSource(transformation_x, transformation_y);
+		// record macro call
+		record( IODialog.LOAD_RAW_TRANSF, path + filename );
 	}
 
 	/*------------------------------------------------------------------*/
@@ -571,14 +577,14 @@ public class IODialog extends Dialog implements ActionListener
 		if ((path == null) || (filename == null)) {
 			return;
 		}
-		String fn_tnf = path+filename;
+		final String directTransfFilename = path+filename;
 
-		int intervals=MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
+		int intervals=MiscTools.numberOfIntervalsOfTransformation(directTransfFilename);
 
 		double [][]cx_direct = new double[intervals+3][intervals+3];
 		double [][]cy_direct = new double[intervals+3][intervals+3];
 
-		MiscTools.loadTransformation(fn_tnf, cx_direct, cy_direct);
+		MiscTools.loadTransformation(directTransfFilename, cx_direct, cy_direct);
 
 
 		// We ask the user for the inverse transformation file
@@ -588,14 +594,16 @@ public class IODialog extends Dialog implements ActionListener
 		if ((path == null) || (filename == null)) {
 			return;
 		}
-		fn_tnf = path+filename;
+		final String inverseTransfFilename = path+filename;
 
-		intervals = MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
+		intervals =
+			MiscTools.numberOfIntervalsOfTransformation( inverseTransfFilename );
 
 		double [][]cx_inverse = new double[intervals+3][intervals+3];
 		double [][]cy_inverse = new double[intervals+3][intervals+3];
 
-		MiscTools.loadTransformation(fn_tnf, cx_inverse, cy_inverse);
+		MiscTools.loadTransformation( inverseTransfFilename, cx_inverse,
+				cy_inverse );
 
 
 		// Now we compare both transformations through the "warping index", which is
@@ -608,6 +616,9 @@ public class IODialog extends Dialog implements ActionListener
 		else
 			IJ.log(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
 
+		// record macro call
+		record( IODialog.COMPARE_OPPOSITE_ELASTIC,
+				directTransfFilename, inverseTransfFilename );
 	}
 
 	/*------------------------------------------------------------------*/

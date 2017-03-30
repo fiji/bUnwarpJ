@@ -1311,5 +1311,20 @@ public class MainDialog extends GenericDialog
 	{
 		return macroArgs;
 	}
-
+	/**
+	 * Get reference to source image
+	 * @return source image
+	 */
+	public ImagePlus getSourceImp()
+	{
+		return this.sourceImp;
+	}
+	/**
+	 * Get reference to target image
+	 * @return target image
+	 */
+	public ImagePlus getTargetImp()
+	{
+		return this.targetImp;
+	}
 } /* end class MainDialog */

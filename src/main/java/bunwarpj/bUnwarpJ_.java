@@ -2599,6 +2599,78 @@ public class bUnwarpJ_ implements PlugIn
 		md.applyTransformationToSource( intervals, cx, cy );
     }
     /**
+     * Load a raw transform from file and apply it to the current source image.
+     *
+     * @param transfPath complete path to raw transform file
+     */
+    public static void loadRawTransform( String transfPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	final double [][]transformation_x =
+    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+		final double [][]transformation_y =
+			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+
+		MiscTools.loadRawTransformation( transfPath,
+				transformation_x, transformation_y);
+
+		// apply raw transformation to source image
+		md.applyRawTransformationToSource( transformation_x, transformation_y );
+    }
+    /**
+     * Compare opposite elastic transforms loaded from file. The result is
+     * expressed using the warping index and displayed in the Log window.
+     * @param directTransfPath complete path to direct elastic transform file
+     * @param inverseTransfPath complete path to inverse elastic transform file
+     */
+    public static void compareOppositeElasticTransforms(
+    		final String directTransfPath,
+    		final String inverseTransfPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	// read number of intervals from direct transform file
+    	int intervals =
+    			MiscTools.numberOfIntervalsOfTransformation( directTransfPath );
+    	// create variables to store coefficients
+		double [][]cx_direct = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy_direct = new double[ intervals+3 ][ intervals+3 ];
+		// read coefficients from file
+		MiscTools.loadTransformation( directTransfPath, cx_direct, cy_direct );
+
+		// read number of intervals from inverse transform file
+		intervals =
+			MiscTools.numberOfIntervalsOfTransformation( inverseTransfPath );
+		// create variables to store coefficients
+		double [][]cx_inverse = new double[intervals+3][intervals+3];
+		double [][]cy_inverse = new double[intervals+3][intervals+3];
+		// read coefficients from file
+		MiscTools.loadTransformation(
+				inverseTransfPath, cx_inverse, cy_inverse );
+
+		// Now we compare both transformations through the "warping index",
+		// which is a method equivalent to our consistency measure.
+
+		double warpingIndex = MiscTools.warpingIndex( md.getSourceImp(),
+				md.getTargetImp(), intervals, cx_direct, cy_direct, cx_inverse,
+				cy_inverse );
+
+		if( warpingIndex != -1 )
+			IJ.log( " Warping index = " + warpingIndex );
+		else
+			IJ.log( " Warping index could not be evaluated because not a single"
+					+ "pixel matched after the deformation!");
+    }
+    /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
 	 */
