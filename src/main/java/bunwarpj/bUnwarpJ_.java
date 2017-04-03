@@ -2700,7 +2700,7 @@ public class bUnwarpJ_ implements PlugIn
 			final double [][]transformation_y =
 				new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
 
-			MiscTools.loadRawTransformation( rawTransfPath,
+		MiscTools.loadRawTransformation( rawTransfPath,
 					transformation_x, transformation_y );
 
 		// Now we compare both transformations through the "warping index",
