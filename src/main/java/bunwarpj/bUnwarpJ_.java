@@ -2796,6 +2796,47 @@ public class bUnwarpJ_ implements PlugIn
 				transformation_x, transformation_y );
     }
     /**
+     * Convert an elastic transform to raw format and save it to file.
+     * @param rawTransfPath complete path to input raw transform file
+     * @param elasticTransfPath complete path to output elastic transform file
+     * @param intervals number of intervals in the B-spline grid
+     */
+    public static void convertToElastic(
+    		final String rawTransfPath,
+    		final String elasticTransfPath,
+    		final String strIntervals )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	// integer value of intervals
+    	final int intervals = Integer.parseInt( strIntervals );
+
+    	// raw transform table
+    	final double [][]transformation_x =
+    	   	new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+    	final double [][]transformation_y =
+    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+    	
+    	// load raw transform
+    	MiscTools.loadRawTransformation( rawTransfPath, transformation_x,
+    			transformation_y);
+    	   	
+    	// create variables to store B-spline coefficients
+		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
+		// convert raw transform to B-spline format
+		MiscTools.convertRawTransformationToBSpline( md.getTargetImp(),
+				intervals, transformation_x, transformation_y, cx, cy );
+
+		// save to file
+		MiscTools.saveElasticTransformation( intervals, cx, cy,
+				elasticTransfPath );
+    }
+    /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
 	 */

@@ -69,6 +69,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String COMPARE_RAW = "compareRawTransforms";
 	/** bUnwarpJ_ method name to convert elastic transform to raw format */
 	public static final String CONVERT_TO_RAW = "convertToRaw";
+	/** bUnwarpJ_ method name to convert raw transform to B-spline format */
+	public static final String CONVERT_TO_ELASTIC = "convertToElastic";
 
 	/*....................................................................
        Private variables
@@ -526,6 +528,9 @@ public class IODialog extends Dialog implements ActionListener
 		MiscTools.convertRawTransformationToBSpline(this.targetImp, intervals, transformation_x, transformation_y, cx, cy);
 
 		MiscTools.saveElasticTransformation(intervals, cx, cy, fn_tnf_elastic);
+		// record macro call
+		record( IODialog.CONVERT_TO_ELASTIC, fn_tnf, fn_tnf_elastic,
+				String.valueOf( intervals ) );
 	}	// end  method saveTransformationInElastic
 
 
