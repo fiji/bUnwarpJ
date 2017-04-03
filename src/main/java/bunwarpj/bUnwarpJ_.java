@@ -2690,22 +2690,22 @@ public class bUnwarpJ_ implements PlugIn
     	int intervals =
     			MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath );
     	// create variables to store coefficients
-		double [][]cx_direct = new double[ intervals+3 ][ intervals+3 ];
-		double [][]cy_direct = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
 		// read coefficients from file
-		MiscTools.loadTransformation( elasticTransfPath, cx_direct, cy_direct );
+		MiscTools.loadTransformation( elasticTransfPath, cx, cy );
 
 		final double [][]transformation_x =
-	    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-			final double [][]transformation_y =
-				new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+	    	new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+		final double [][]transformation_y =
+			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
 
 		MiscTools.loadRawTransformation( rawTransfPath,
 					transformation_x, transformation_y );
 
 		// Now we compare both transformations through the "warping index",
 		double warpingIndex = MiscTools.warpingIndex( md.getSourceImp(),
-				md.getTargetImp(), intervals, cx_direct, cy_direct,
+				md.getTargetImp(), intervals, cx, cy,
 				transformation_x, transformation_y );
 
 		if( warpingIndex != -1 )
