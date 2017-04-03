@@ -2671,6 +2671,51 @@ public class bUnwarpJ_ implements PlugIn
 					+ "pixel matched after the deformation!");
     }
     /**
+     * Compare an elastic and a raw transform loaded from file. The result is
+     * expressed using the warping index and displayed in the Log window.
+     * @param elasticTransfPath complete path to elastic transform file
+     * @param rawTransfPath complete path to raw transform file
+     */
+    public static void compareElasticRawTransforms(
+    		final String elasticTransfPath,
+    		final String rawTransfPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	// read number of intervals from direct transform file
+    	int intervals =
+    			MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath );
+    	// create variables to store coefficients
+		double [][]cx_direct = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy_direct = new double[ intervals+3 ][ intervals+3 ];
+		// read coefficients from file
+		MiscTools.loadTransformation( elasticTransfPath, cx_direct, cy_direct );
+
+		final double [][]transformation_x =
+	    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+			final double [][]transformation_y =
+				new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+
+			MiscTools.loadRawTransformation( rawTransfPath,
+					transformation_x, transformation_y );
+
+		// Now we compare both transformations through the "warping index",
+		double warpingIndex = MiscTools.warpingIndex( md.getSourceImp(),
+				md.getTargetImp(), intervals, cx_direct, cy_direct,
+				transformation_x, transformation_y );
+
+		if( warpingIndex != -1 )
+			IJ.log( " Warping index = " + warpingIndex );
+		else
+			IJ.log( " Warping index could not be evaluated because not a single"
+					+ "pixel matched after the deformation!");
+    }
+
+    /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
 	 */
