@@ -67,6 +67,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String COMPARE_ELASTIC_RAW = "compareElasticRawTransforms";
 	/** bUnwarpJ_ method name to compare raw transforms */
 	public static final String COMPARE_RAW = "compareRawTransforms";
+	/** bUnwarpJ_ method name to convert elastic transform to raw format */
+	public static final String CONVERT_TO_RAW = "convertToRaw";
 
 	/*....................................................................
        Private variables
@@ -477,6 +479,8 @@ public class IODialog extends Dialog implements ActionListener
 		MiscTools.convertElasticTransformationToRaw(this.targetImp, intervals, cx, cy, transformation_x, transformation_y);
 
 		MiscTools.saveRawTransformation(fn_tnf_raw, this.targetImp.getWidth(), this.targetImp.getHeight(), transformation_x, transformation_y);
+		// record macro call
+		record( IODialog.CONVERT_TO_RAW, fn_tnf, fn_tnf_raw );
 	}
 
 	/*------------------------------------------------------------------*/
