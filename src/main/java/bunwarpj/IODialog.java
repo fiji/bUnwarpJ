@@ -65,6 +65,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String COMPARE_OPPOSITE_ELASTIC = "compareOppositeElasticTransforms";
 	/** bUnwarpJ_ method name to compare elastic and raw transforms */
 	public static final String COMPARE_ELASTIC_RAW = "compareElasticRawTransforms";
+	/** bUnwarpJ_ method name to compare raw transforms */
+	public static final String COMPARE_RAW = "compareRawTransforms";
 
 	/*....................................................................
        Private variables
@@ -900,7 +902,10 @@ public class IODialog extends Dialog implements ActionListener
 		if(warpingIndex != -1)
 			IJ.log(" Warping index = " + warpingIndex);
 		else
-			IJ.log(" Warping index could not be evaluated because not a single pixel matched after the deformation!");
+			IJ.log(" Warping index could not be evaluated because not a single"
+					+ " pixel matched after the deformation!");
+		// record macro call
+		record( IODialog.COMPARE_RAW, fn_tnf_raw, fn_tnf_raw_2 );
 	}
 
 	/*------------------------------------------------------------------*/

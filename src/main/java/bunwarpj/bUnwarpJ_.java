@@ -2716,6 +2716,49 @@ public class bUnwarpJ_ implements PlugIn
     }
 
     /**
+     * Compare two raw transforms loaded from file. The result is
+     * expressed using the warping index and displayed in the Log window.
+     * @param rawTransfPath1 complete path to first raw transform file
+     * @param rawTransfPath2 complete path to second raw transform file
+     */
+    public static void compareRawTransforms(
+    		final String rawTransfPath1,
+    		final String rawTransfPath2 )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	final double [][]transformation_x1 =
+    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+    	final double [][]transformation_y1 =
+    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+
+    	MiscTools.loadRawTransformation( rawTransfPath1,
+    			transformation_x1, transformation_y1 );
+
+    	final double [][]transformation_x2 =
+    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+    	final double [][]transformation_y2 =
+    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+
+    	MiscTools.loadRawTransformation( rawTransfPath2,
+    			transformation_x2, transformation_y2 );
+
+    	// Now we compare both transformations through the "warping index",
+    	double warpingIndex = MiscTools.rawWarpingIndex( md.getSourceImp(),
+    			md.getTargetImp(), transformation_x1, transformation_y1,
+    			transformation_x2, transformation_y2 );
+
+    	if( warpingIndex != -1 )
+    		IJ.log( " Warping index = " + warpingIndex );
+    	else
+    		IJ.log( " Warping index could not be evaluated because not a single"
+    				+ "pixel matched after the deformation!");
+    }
+    /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
 	 */
