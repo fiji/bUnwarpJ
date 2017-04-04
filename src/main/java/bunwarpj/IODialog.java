@@ -77,6 +77,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String COMPOSE_RAW = "composeRawTransforms";
 	/** bUnwarpJ_ method name to compose raw and elastic transforms */
 	public static final String COMPOSE_RAW_ELASTIC = "composeRawElasticTransforms";
+	/** bUnwarpJ_ method name to invert a raw transform */
+	public static final String INVERT_RAW = "invertRawTransform";
 
 	/*....................................................................
        Private variables
@@ -542,7 +544,7 @@ public class IODialog extends Dialog implements ActionListener
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Invert a raw transformation
+	 * Invert a raw transformation (approximation).
 	 */
 	private void invertRawTransformation ()
 	{
@@ -577,8 +579,8 @@ public class IODialog extends Dialog implements ActionListener
 
 		MiscTools.saveRawTransformation(fn_tnf_inverse, targetImp.getWidth(), 
 				targetImp.getHeight(), inv_x, inv_y);
-
-
+		// record macro call
+		record( IODialog.INVERT_RAW, fn_tnf, fn_tnf_inverse );
 	}	// end  method saveTransformationInElastic
 
 

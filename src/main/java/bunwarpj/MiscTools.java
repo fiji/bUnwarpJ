@@ -967,13 +967,13 @@ public class MiscTools
 	
 	/*------------------------------------------------------------------
 	/**
-	 * Invert the raw transformation 
+	 * Invert the raw transformation (approximation)
 	 *
 	 * @param targetImp target image representation
-	 * @param transformation_x raw transformation in x- axis 
-	 * @param transformation_y raw transformation in y- axis 
-	 * @param inv_x transformation x- B-spline coefficients (output)
-	 * @param inv_y transformation y- B-spline coefficients (output)	 
+	 * @param transformation_x raw transformation in x- axis (input)
+	 * @param transformation_y raw transformation in y- axis (input)
+	 * @param inv_x raw transformation in x- axis (output)
+	 * @param inv_y raw transformation in y- axis (output)
 	 */
 	public static void invertRawTransformation(
 			ImagePlus targetImp,
@@ -1009,7 +1009,7 @@ public class MiscTools
 		
 			}
 		
-		// Substitute empty transformation positions
+		// Replace empty transformation positions
 		for (int i = 0; i < targetCurrentHeight; i++)
 			for (int j = 0; j < targetCurrentWidth; j++)
 			{
@@ -1061,7 +1061,6 @@ public class MiscTools
 							val_y += inv_y[i+1][j+1];
 							n++;
 						}
-						
 					}
 					
 					if(j > 0 && inv_x[i][j-1] != 0 && inv_y[i][j-1] != 0)
@@ -1085,12 +1084,7 @@ public class MiscTools
 						inv_y[i][j] += val_y / n;
 					}
 				}
-				
-				
-				
 			}
-		
-
 	} // end invertRawTransformation 	
 	
 	
