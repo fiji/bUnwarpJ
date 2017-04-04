@@ -73,6 +73,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String CONVERT_TO_ELASTIC = "convertToElastic";
 	/** bUnwarpJ_ method name to compose elastic transforms */
 	public static final String COMPOSE_ELASTIC = "composeElasticTransforms";
+	/** bUnwarpJ_ method name to compose raw transforms */
+	public static final String COMPOSE_RAW = "composeRawTransforms";
 
 	/*....................................................................
        Private variables
@@ -820,6 +822,9 @@ public class IODialog extends Dialog implements ActionListener
 
 		MiscTools.saveRawTransformation(fn_tnf_raw_out, this.targetImp.getWidth(),
 				this.targetImp.getHeight(), outputTransformation_x, outputTransformation_y);
+		// record macro call
+		record( IODialog.COMPOSE_RAW, fn_tnf_raw, fn_tnf_raw_2,
+				fn_tnf_raw_out );
 	}
 
 	/*------------------------------------------------------------------*/
