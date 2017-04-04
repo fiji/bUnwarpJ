@@ -2985,6 +2985,44 @@ public class bUnwarpJ_ implements PlugIn
 				outputTransformation_x, outputTransformation_y );
     }
     /**
+     * Adapt the B-spline coefficients to a new image size.
+     * @param inputTransfPath complete path to input transform file
+     * @param strImageFactor string containing the image factor to apply
+     * @param outputTransfPath complete path to output transform file
+     */
+    public static void adaptCoefficients(
+    		final String inputTransfPath,
+    		final String strImageFactor,
+    		final String outputTransfPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	// read number of intervals from elastic transform file
+    	int intervals =
+    			MiscTools.numberOfIntervalsOfTransformation( inputTransfPath );
+    	// create variables to store coefficients
+		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
+		// read coefficients from file
+		MiscTools.loadTransformation( inputTransfPath, cx, cy );
+    	
+		// adapt coefficients.
+		double dImageSizeFactor = Double.parseDouble( strImageFactor );
+		for(int i = 0; i < (intervals+3); i++)
+			for(int j = 0; j < (intervals+3); j++)
+			{
+				cx[i][j] *= dImageSizeFactor;
+				cy[i][j] *= dImageSizeFactor;
+			}
+		// save to file
+		MiscTools.saveElasticTransformation( intervals, cx, cy,
+				outputTransfPath );
+    }
+    /**
      * Approximate the inverse of a raw transform and save it to file.
      *
      * @param inputTransfPath complete path to input raw transform file

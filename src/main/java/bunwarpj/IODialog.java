@@ -79,6 +79,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String COMPOSE_RAW_ELASTIC = "composeRawElasticTransforms";
 	/** bUnwarpJ_ method name to invert a raw transform */
 	public static final String INVERT_RAW = "invertRawTransform";
+	/** bUnwarpJ_ method name to adapt B-spline coefficients to a scale */
+	public static final String ADAPT_COEFFICIENTS = "adaptCoefficients";
 
 	/*....................................................................
        Private variables
@@ -447,6 +449,8 @@ public class IODialog extends Dialog implements ActionListener
 
 		String sNewFileName = path_save + filename_save;
 		MiscTools.saveElasticTransformation(intervals, cx, cy, sNewFileName);
+		// record macro call
+		record( IODialog.ADAPT_COEFFICIENTS, fn_tnf, sInput, sNewFileName );
 	}
 
 
