@@ -75,6 +75,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String COMPOSE_ELASTIC = "composeElasticTransforms";
 	/** bUnwarpJ_ method name to compose raw transforms */
 	public static final String COMPOSE_RAW = "composeRawTransforms";
+	/** bUnwarpJ_ method name to compose raw and elastic transforms */
+	public static final String COMPOSE_RAW_ELASTIC = "composeRawElasticTransforms";
 
 	/*....................................................................
        Private variables
@@ -720,13 +722,13 @@ public class IODialog extends Dialog implements ActionListener
 		if ((path == null) || (filename == null)) {
 			return;
 		}
-		String fn_tnf = path+filename;
+		final String rawTransfPath = path+filename;
 
 		double[][] transformation_x_1 = new double[targetImp.getHeight()][targetImp.getWidth()];
 		double[][] transformation_y_1 = new double[targetImp.getHeight()][targetImp.getWidth()];
 
-		MiscTools.loadRawTransformation(fn_tnf, transformation_x_1, transformation_y_1);
-
+		MiscTools.loadRawTransformation(
+				rawTransfPath, transformation_x_1, transformation_y_1 );
 
 		// We ask the user for the second transformation file
 		od = new OpenDialog("Composing - Load Second (Elastic) Transformation", "");
@@ -736,14 +738,15 @@ public class IODialog extends Dialog implements ActionListener
 		if ((path == null) || (filename == null)) {
 			return;
 		}
-		fn_tnf = path+filename;
+		final String elasticTransfPath = path+filename;
 
-		int intervals = MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
+		int intervals =
+				MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath );
 
 		double [][]cx2 = new double[intervals+3][intervals+3];
 		double [][]cy2 = new double[intervals+3][intervals+3];
 
-		MiscTools.loadTransformation(fn_tnf, cx2, cy2);
+		MiscTools.loadTransformation( elasticTransfPath, cx2, cy2 );
 
 		double [][] outputTransformation_x = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
 		double [][] outputTransformation_y = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
@@ -764,6 +767,9 @@ public class IODialog extends Dialog implements ActionListener
 
 		MiscTools.saveRawTransformation(fn_tnf_raw, this.targetImp.getWidth(),
 				this.targetImp.getHeight(), outputTransformation_x, outputTransformation_y);
+		// record macro call
+		record( IODialog.COMPOSE_RAW_ELASTIC, rawTransfPath, elasticTransfPath,
+				fn_tnf_raw );
 	}
 
 	/*------------------------------------------------------------------*/
