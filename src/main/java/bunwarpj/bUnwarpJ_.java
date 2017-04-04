@@ -2837,6 +2837,56 @@ public class bUnwarpJ_ implements PlugIn
 				elasticTransfPath );
     }
     /**
+     * Compose two elastic transforms into a raw transform.
+     * @param elasticTransfPath1 complete path to first elastic transform file
+     * @param elasticTransfPath2 complete path to second elastic transform file
+     * @param rawTransfPath complete path to output raw transform file
+     */
+    public static void composeElasticTransforms(
+    		final String elasticTransfPath1,
+    		final String elasticTransfPath2,
+    		final String rawTransfPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	// read number of intervals from first elastic transform file
+    	int intervals =
+    			MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath1 );
+    	// create variables to store coefficients
+		double [][]cx1 = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy1 = new double[ intervals+3 ][ intervals+3 ];
+		// read coefficients from file
+		MiscTools.loadTransformation( elasticTransfPath1, cx1, cy1 );
+
+		// read number of intervals from second elastic transform file
+		intervals =
+			MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath2 );
+		// create variables to store coefficients
+		double [][]cx2 = new double[intervals+3][intervals+3];
+		double [][]cy2 = new double[intervals+3][intervals+3];
+		// read coefficients from file
+		MiscTools.loadTransformation( elasticTransfPath2, cx2, cy2 );
+
+		// raw transform tables
+		double [][] transformation_x =
+			new double[ md.getTarget().getHeight() ][ md.getTarget().getWidth() ];
+		double [][] transformation_y =
+			new double[ md.getTarget().getHeight() ][ md.getTarget().getWidth() ];
+
+		// compose them and get as result a raw transformation mapping
+		MiscTools.composeElasticTransformations( md.getTargetImp(), intervals,
+			cx1, cy1, cx2, cy2, transformation_x, transformation_y );
+		// save to file
+		MiscTools.saveRawTransformation( rawTransfPath,
+				md.getTarget().getWidth(), md.getTarget().getHeight(),
+				transformation_x, transformation_y );
+    }
+
+    /**
 	 * Get bUnwarpJ main dialog (if exists)
 	 * @return bUnwarpJ main dialog or null if it does not exist
 	 */
