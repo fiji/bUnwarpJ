@@ -2704,7 +2704,7 @@ public class bUnwarpJ_ implements PlugIn
 					transformation_x, transformation_y );
 
 		// Now we compare both transformations through the "warping index",
-		double warpingIndex = MiscTools.warpingIndex( md.getSourceImp(),
+		double warpingIndex = MiscTools.rawWarpingIndex( md.getSourceImp(),
 				md.getTargetImp(), intervals, cx, cy,
 				transformation_x, transformation_y );
 
