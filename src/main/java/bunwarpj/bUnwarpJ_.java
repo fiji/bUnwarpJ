@@ -3023,6 +3023,21 @@ public class bUnwarpJ_ implements PlugIn
 				outputTransfPath );
     }
     /**
+     * Load a source mask from file.
+     * @param sourceMaskPath complete path to source mask image
+     */
+    public static void loadSourceMask( final String sourceMaskPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	md.setSourceMask( sourceMaskPath );
+		md.grayImage( md.getSourcePh() );
+    }
+    /**
      * Approximate the inverse of a raw transform and save it to file.
      *
      * @param inputTransfPath complete path to input raw transform file

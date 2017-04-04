@@ -81,6 +81,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String INVERT_RAW = "invertRawTransform";
 	/** bUnwarpJ_ method name to adapt B-spline coefficients to a scale */
 	public static final String ADAPT_COEFFICIENTS = "adaptCoefficients";
+	/** bUnwarpJ_ method name to load a source mask */
+	public static final String LOAD_SOURCE_MASK = "loadSourceMask";
 
 	/*....................................................................
        Private variables
@@ -351,7 +353,8 @@ public class IODialog extends Dialog implements ActionListener
 		String fnSourceMask = path+filename;
 		dialog.setSourceMask(fnSourceMask);
 		dialog.grayImage(sourcePh);
-
+		// record macro call
+		record( IODialog.LOAD_SOURCE_MASK, fnSourceMask );
 	}
 	/* end loadSourceMask */
 
