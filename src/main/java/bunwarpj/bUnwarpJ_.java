@@ -3037,6 +3037,25 @@ public class bUnwarpJ_ implements PlugIn
     	md.setSourceMask( sourceMaskPath );
 		md.grayImage( md.getSourcePh() );
     }
+
+    /**
+     * Load an initial affine matrix for the source image.
+     * @param affineMatrixPath complete path to affine matrix file.
+     */
+    public static void loadSourceAffineMatrix( final String affineMatrixPath )
+    {
+    	final MainDialog md = bUnwarpJ_.getMainDialog();
+    	if( null == md )
+    	{
+    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		return;
+    	}
+    	final double[][] affineMatrix = new double[2][3];
+		MiscTools.loadAffineMatrix( affineMatrixPath, affineMatrix );
+
+		md.setSourceAffineMatrix( affineMatrix );
+    }
+
     /**
      * Approximate the inverse of a raw transform and save it to file.
      *

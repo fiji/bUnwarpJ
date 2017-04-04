@@ -83,6 +83,8 @@ public class IODialog extends Dialog implements ActionListener
 	public static final String ADAPT_COEFFICIENTS = "adaptCoefficients";
 	/** bUnwarpJ_ method name to load a source mask */
 	public static final String LOAD_SOURCE_MASK = "loadSourceMask";
+	/** bUnwarpJ_ method name to load an affine matrix to the source image */
+	public static final String LOAD_SOURCE_AFFINE = "loadSourceAffineMatrix";
 
 	/*....................................................................
        Private variables
@@ -360,7 +362,7 @@ public class IODialog extends Dialog implements ActionListener
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Load a source initial affine matrix.
+	 * Load a source initial affine matrix from file.
 	 */
 	private void loadSourceInitialAffineMatrix ()
 	{
@@ -375,6 +377,8 @@ public class IODialog extends Dialog implements ActionListener
 		MiscTools.loadAffineMatrix(path+filename, affineMatrix);
 
 		this.dialog.setSourceAffineMatrix(affineMatrix);
+		// record macro call
+		record( IODialog.LOAD_SOURCE_AFFINE, path+filename );
 	}
 	/* end loadSourceInitialAffineMatrix */
 
