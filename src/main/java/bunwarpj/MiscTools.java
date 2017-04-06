@@ -24,6 +24,7 @@ package bunwarpj;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.Prefs;
 import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.io.OpenDialog;
@@ -34,10 +35,12 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 
+import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -45,6 +48,8 @@ import java.io.IOException;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import javax.swing.JFileChooser;
 
 /**
  * Different tools for the bUnwarpJ interface.
@@ -3562,5 +3567,43 @@ public class MiscTools
 			IJ.getTextPanel().append( n + "\t" + xSource + "\t" + ySource +
 					"\t" + xTarget + "\t" + yTarget);
 		}
+	}
+	/**
+	 * Show a non-recordable dialog so the user selects a file.
+	 * @param dialogTitle displayed dialog title
+	 * @return complete path to file or null if dialog is cancelled.
+	 */
+	public static String getUserSelectedFilePath( String dialogTitle )
+	{
+		String path = null;
+		String filename = null;
+		String currentFolder = OpenDialog.getLastDirectory() != null ?
+				OpenDialog.getLastDirectory() : OpenDialog.getDefaultDirectory();
+		if( Prefs.useFileChooser )
+		{
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle( dialogTitle );
+			chooser.setCurrentDirectory( new File( currentFolder ));
+			chooser.setVisible( true );
+			final int result = chooser.showOpenDialog( null );
+			if( result == JFileChooser.APPROVE_OPTION )
+			{
+				path = chooser.getCurrentDirectory().getPath() + File.separator;
+				filename = chooser.getSelectedFile().getName();
+			}
+		}
+		else
+		{
+			FileDialog fd = new FileDialog( IJ.getInstance(),
+					dialogTitle, FileDialog.LOAD );
+			fd.setDirectory( currentFolder );
+			fd.setVisible( true );
+			path = fd.getDirectory() + File.separator;
+			filename = fd.getName();
+		}
+
+		if ((path == null) || (filename == null))
+			return null;
+		return path+filename;
 	}
 } /* End of MiscTools class */
