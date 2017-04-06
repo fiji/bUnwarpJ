@@ -317,16 +317,11 @@ public class IODialog extends Dialog implements ActionListener
 	 */
 	private void loadTransformation ()
 	{
-		final OpenDialog od = new OpenDialog("Load Elastic Transformation", "");
-		final String path = od.getDirectory();
-		final String filename = od.getFileName();
-
-		if ((path == null) || (filename == null))
+		String fn_tnf = MiscTools.getUserSelectedFilePath(
+				"Load Elastic Transformation" );
+		if( null == fn_tnf )
 			return;
-
-		String fn_tnf = path+filename;
-
-		int intervals = MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
+		int intervals = MiscTools.numberOfIntervalsOfTransformation( fn_tnf );
 
 		double [][]cx = new double[intervals+3][intervals+3];
 		double [][]cy = new double[intervals+3][intervals+3];
@@ -336,7 +331,8 @@ public class IODialog extends Dialog implements ActionListener
 		// Apply transformation
 		dialog.applyTransformationToSource(intervals, cx, cy);
 		// record macro call
-		record( IODialog.LOAD_ELASTIC_TRANSF, path + filename );
+		record( IODialog.LOAD_ELASTIC_TRANSF, fn_tnf,
+				targetImp.getTitle(), sourceImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/

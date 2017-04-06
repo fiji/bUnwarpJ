@@ -1665,26 +1665,7 @@ public class bUnwarpJ_ implements PlugIn
        if(sourceImp == null)
            IJ.error("\nError: " + fn_source + " could not be opened\n");
    
-       BSplineModel source = new BSplineModel( sourceImp.getProcessor(), false, 1 );
-       source.setPyramidDepth(0);
-       source.startPyramids();
-
-       // Load transformation
-       int intervals=MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
-       double [][]cx=new double[intervals+3][intervals+3];
-       double [][]cy=new double[intervals+3][intervals+3];
-       MiscTools.loadTransformation(fn_tnf, cx, cy);
-
-       // Join threads
-       try {
-    	   source.getThread().join();
-       } catch (InterruptedException e) {
-    	   IJ.error("Unexpected interruption exception " + e);
-       }
-
-       // Apply transformation to source
-       MiscTools.applyTransformationToSourceMT(
-    		   sourceImp, targetImp, source, intervals, cx, cy);
+       applyTransformToSource(fn_tnf, targetImp, sourceImp);
 
        // Save results
        FileSaver fs = new FileSaver(sourceImp);
@@ -1694,6 +1675,40 @@ public class bUnwarpJ_ implements PlugIn
        else
     	   System.out.println("Saved file " + fn_out);
     } /* end elasticTransformIMageCommandLine */
+
+    /**
+     * Apply transform loaded from file to source image (in place).
+     * @param transfPath complete path to transform file
+     * @param targetImp target (fixed) image
+     * @param sourceImp source (moving) image
+     */
+	public static void applyTransformToSource(
+			String transfPath,
+			ImagePlus targetImp,
+			ImagePlus sourceImp )
+	{
+		BSplineModel source = new BSplineModel( sourceImp.getProcessor(), false, 1 );
+		source.setPyramidDepth(0);
+		source.startPyramids();
+
+		// Load transformation
+		int intervals=MiscTools.numberOfIntervalsOfTransformation(transfPath);
+		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
+		MiscTools.loadTransformation( transfPath, cx, cy );
+
+		// Join threads
+		try {
+			source.getThread().join();
+		} catch (InterruptedException e) {
+			IJ.error("Unexpected interruption exception " + e);
+			return;
+		}
+
+		// Apply transformation to source
+		MiscTools.applyTransformationToSourceMT(
+				sourceImp, targetImp, source, intervals, cx, cy );
+	}
 
     //------------------------------------------------------------------
     /**
@@ -2566,28 +2581,28 @@ public class bUnwarpJ_ implements PlugIn
     }
     /**
      * Load an elastic transform (bUnwarpJ format) from file and apply it to
-     * the current source image.
+     * the source image.
      *
      * @param transfPath complete path to elastic transform file
      */
-    public static void loadElasticTransform( String transfPath )
+    public static void loadElasticTransform(
+    		String transfPath,
+    		String targetTitle,
+    		String sourceTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	final ImagePlus sourceImp = WindowManager.getImage( sourceTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error("Error: " + targetTitle + " image not found!");
     		return;
     	}
-    	final int intervals =
-    			MiscTools.numberOfIntervalsOfTransformation( transfPath );
-
-		final double [][]cx = new double[ intervals + 3 ][ intervals + 3 ];
-		final double [][]cy = new double[ intervals + 3 ][ intervals + 3 ];
-
-		MiscTools.loadTransformation( transfPath, cx, cy );
-
-		// apply transformation
-		md.applyTransformationToSource( intervals, cx, cy );
+    	if( null == sourceImp )
+    	{
+    		IJ.error("Error: " + sourceTitle + " image not found!");
+    		return;
+    	}
+    	bUnwarpJ_.applyTransformToSource( transfPath, targetImp, sourceImp );
     }
     /**
      * Load a raw transform from file and apply it to the current source image.
