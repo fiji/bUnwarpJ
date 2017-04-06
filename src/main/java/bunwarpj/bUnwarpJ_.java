@@ -2,9 +2,9 @@ package bunwarpj;
 
 /**
  * bUnwarpJ plugin for ImageJ and Fiji.
- * Copyright (C) 2005-2009 Ignacio Arganda-Carreras and Jan Kybic 
+ * Copyright (C) 2005-2017 Ignacio Arganda-Carreras and Jan Kybic 
  *
- * More information at http://biocomp.cnb.csic.es/%7Eiarganda/bUnwarpJ/
+ * More information at http://imagej.net/BUnwarpJ/
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,18 +19,6 @@ package bunwarpj;
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * 
- */
-
-/**
- * ====================================================================
- *  Version: November 2nd, 2009
- *  http://biocomp.cnb.csic.es/%7Eiarganda/bUnwarpJ/
- * \===================================================================
- */
-
-/**
- * Old version (UnwarpJ) information: 
- * http://bigwww.epfl.ch/thevenaz/UnwarpJ/
  */
 
 import ij.IJ;
@@ -63,10 +51,10 @@ import java.util.Stack;
  * of the previous UnwarpJ project by Carlos Oscar Sanchez Sorzano.
  * <p>
  * For more information visit the main site 
- * <A target="_blank" href="http://biocomp.cnb.csic.es/~iarganda/bUnwarpJ/">
- * http://biocomp.cnb.csic.es/~iarganda/bUnwarpJ/</a>
+ * <A target="_blank" href="http://imagej.net/BUnwarpJ/">
+ * http://imagej.net/BUnwarpJ/</a>
  *
- * @author Ignacio Arganda-Carreras (ignacio.arganda at gmail.com)
+ * @author Ignacio Arganda-Carreras
  */
 public class bUnwarpJ_ implements PlugIn
 { /* begin class bUnwarpJ_ */
