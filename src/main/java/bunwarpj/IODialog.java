@@ -384,15 +384,10 @@ public class IODialog extends Dialog implements ActionListener
 	 */
 	private void loadRawTransformation ()
 	{
-		final OpenDialog od = new OpenDialog("Load Raw Transformation", "");
-		final String path = od.getDirectory();
-		final String filename = od.getFileName();
-
-		if ((path == null) || (filename == null))
+		String fn_tnf = MiscTools.getUserSelectedFilePath(
+				"Load Raw Transformation" );
+		if( fn_tnf == null )
 			return;
-
-		String fn_tnf = path+filename;
-
 		double [][]transformation_x = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
 		double [][]transformation_y = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
 
@@ -401,7 +396,8 @@ public class IODialog extends Dialog implements ActionListener
 		// Apply transformation
 		dialog.applyRawTransformationToSource(transformation_x, transformation_y);
 		// record macro call
-		record( IODialog.LOAD_RAW_TRANSF, path + filename );
+		record( IODialog.LOAD_RAW_TRANSF, fn_tnf, targetImp.getTitle(),
+				sourceImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/

@@ -2608,26 +2608,65 @@ public class bUnwarpJ_ implements PlugIn
      * Load a raw transform from file and apply it to the current source image.
      *
      * @param transfPath complete path to raw transform file
+     * @param targetTitle title of the target image
+     * @param sourceTitle title of the source image
      */
-    public static void loadRawTransform( String transfPath )
+    public static void loadRawTransform(
+    		String transfPath,
+    		String targetTitle,
+    		String sourceTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	final ImagePlus sourceImp = WindowManager.getImage( sourceTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error("Error: " + targetTitle + " image not found!");
     		return;
     	}
-    	final double [][]transformation_x =
-    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+    	if( null == sourceImp )
+    	{
+    		IJ.error("Error: " + sourceTitle + " image not found!");
+    		return;
+    	}
+    	// apply raw transform to source
+    	applyRawTransformToSource( transfPath, targetImp, sourceImp );
+    }
+
+    /**
+     * Apply a raw transform loaded from file to the source image.
+     * @param transfPath complete path to raw transform file
+     * @param targetImp target image
+     * @param sourceImp source image
+     */
+	public static void applyRawTransformToSource(
+			String transfPath,
+			final ImagePlus targetImp,
+			final ImagePlus sourceImp )
+	{
+		final double [][]transformation_x =
+    		new double[ targetImp.getHeight()][ targetImp.getWidth() ];
 		final double [][]transformation_y =
-			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
+			new double[ targetImp.getHeight()][ targetImp.getWidth() ];
 
 		MiscTools.loadRawTransformation( transfPath,
-				transformation_x, transformation_y);
+				transformation_x, transformation_y );
+		
+		BSplineModel source = new BSplineModel( sourceImp.getProcessor(), false, 1 );
+		source.setPyramidDepth(0);
+		source.startPyramids();
 
-		// apply raw transformation to source image
-		md.applyRawTransformationToSource( transformation_x, transformation_y );
-    }
+		// Join threads
+		try {
+			source.getThread().join();
+		} catch (InterruptedException e) {
+			IJ.error("Unexpected interruption exception " + e);
+			return;
+		}
+
+		// Apply transformation to source
+		MiscTools.applyRawTransformationToSource( sourceImp, targetImp, source,
+				transformation_x, transformation_y );
+	}
     /**
      * Compare opposite elastic transforms loaded from file. The result is
      * expressed using the warping index and displayed in the Log window.
