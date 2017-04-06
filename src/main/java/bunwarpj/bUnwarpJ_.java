@@ -1656,24 +1656,18 @@ public class bUnwarpJ_ implements PlugIn
 
        // Open target
        Opener opener=new Opener();
-       ImagePlus targetImp;
-       targetImp=opener.openImage(fn_target);
+       ImagePlus targetImp = opener.openImage( fn_target );
        if(targetImp == null)
            IJ.error("\nError: " + fn_target + " could not be opened\n");
 
        // Open source
-       ImagePlus sourceImp;
-       sourceImp = opener.openImage(fn_source);
+       ImagePlus sourceImp = opener.openImage( fn_source );
        if(sourceImp == null)
            IJ.error("\nError: " + fn_source + " could not be opened\n");
    
-       BSplineModel source = null;
-
-       source = new BSplineModel(sourceImp.getProcessor(), false, 1);
+       BSplineModel source = new BSplineModel( sourceImp.getProcessor(), false, 1 );
        source.setPyramidDepth(0);
-       //source.startPyramids();
        source.startPyramids();
-       
 
        // Load transformation
        int intervals=MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
@@ -1682,13 +1676,11 @@ public class bUnwarpJ_ implements PlugIn
        MiscTools.loadTransformation(fn_tnf, cx, cy);
 
        // Join threads
-
        try {
     	   source.getThread().join();
        } catch (InterruptedException e) {
     	   IJ.error("Unexpected interruption exception " + e);
        }
-
 
        // Apply transformation to source
        MiscTools.applyTransformationToSourceMT(
@@ -1701,7 +1693,6 @@ public class bUnwarpJ_ implements PlugIn
     	   System.out.println("Error when saving file " + fn_out);
        else
     	   System.out.println("Saved file " + fn_out);
-       
     } /* end elasticTransformIMageCommandLine */
 
     //------------------------------------------------------------------
