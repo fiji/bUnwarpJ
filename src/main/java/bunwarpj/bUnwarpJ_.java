@@ -2706,40 +2706,34 @@ public class bUnwarpJ_ implements PlugIn
     /**
      * Compare an elastic and a raw transform loaded from file. The result is
      * expressed using the warping index and displayed in the Log window.
+     *
      * @param elasticTransfPath complete path to elastic transform file
      * @param rawTransfPath complete path to raw transform file
+     * @param targetTitle target image title
+     * @param sourceTitle source image title
      */
     public static void compareElasticRawTransforms(
     		final String elasticTransfPath,
-    		final String rawTransfPath )
+    		final String rawTransfPath,
+    		final String targetTitle,
+    		final String sourceTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	final ImagePlus sourceImp = WindowManager.getImage( sourceTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error("Error: " + targetTitle + " image not found!");
     		return;
     	}
-    	// read number of intervals from direct transform file
-    	int intervals =
-    			MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath );
-    	// create variables to store coefficients
-		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
-		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
-		// read coefficients from file
-		MiscTools.loadTransformation( elasticTransfPath, cx, cy );
-
-		final double [][]transformation_x =
-	    	new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-		final double [][]transformation_y =
-			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-
-		MiscTools.loadRawTransformation( rawTransfPath,
-					transformation_x, transformation_y );
+    	if( null == sourceImp )
+    	{
+    		IJ.error("Error: " + sourceTitle + " image not found!");
+    		return;
+    	}
 
 		// Now we compare both transformations through the "warping index",
-		double warpingIndex = MiscTools.rawWarpingIndex( md.getSourceImp(),
-				md.getTargetImp(), intervals, cx, cy,
-				transformation_x, transformation_y );
+		double warpingIndex = MiscTools.elasticRawWarpingIndex(
+				elasticTransfPath, rawTransfPath, targetImp, sourceImp );
 
 		if( warpingIndex != -1 )
 			IJ.log( " Warping index = " + warpingIndex );

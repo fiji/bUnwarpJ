@@ -3606,4 +3606,38 @@ public class MiscTools
 			return null;
 		return path+filename;
 	}
+	/**
+	 * Calculate warping index between an elastic and a raw transform loaded
+	 * from file.
+	 *
+	 * @param elasticTransfPath complete path of elastic transform file
+	 * @param rawTransfPath complete path of raw transform file
+	 * @param targetImp target image
+	 * @param sourceImp source image
+	 * @return warping index
+	 */
+	public static double elasticRawWarpingIndex(
+			String elasticTransfPath,
+			String rawTransfPath,
+			ImagePlus targetImp,
+			ImagePlus sourceImp )
+	{
+		int intervals = MiscTools.numberOfIntervalsOfTransformation(elasticTransfPath);
+
+		double [][]cx_direct = new double[intervals+3][intervals+3];
+		double [][]cy_direct = new double[intervals+3][intervals+3];
+
+		MiscTools.loadTransformation(elasticTransfPath, cx_direct, cy_direct);
+
+		// We load the transformation raw file.
+		double[][] transformation_x = new double[targetImp.getHeight()][targetImp.getWidth()];
+		double[][] transformation_y = new double[targetImp.getHeight()][targetImp.getWidth()];
+		MiscTools.loadRawTransformation(rawTransfPath, transformation_x,
+				transformation_y);
+
+		double warpingIndex = MiscTools.rawWarpingIndex( sourceImp, targetImp,
+				intervals, cx_direct, cy_direct, transformation_x,
+				transformation_y);
+		return warpingIndex;
+	}
 } /* End of MiscTools class */

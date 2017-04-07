@@ -845,42 +845,18 @@ public class IODialog extends Dialog implements ActionListener
 	 */
 	private void compareElasticWithRaw ()
 	{
-		// We ask the user for the direct transformation file
-		OpenDialog od = new OpenDialog("Comparing - Load Elastic Transformation", "");
-		String path = od.getDirectory();
-		String filename = od.getFileName();
-
-		if ((path == null) || (filename == null)) {
+		// We ask the user for the elastic transformation file
+		String fn_tnf = MiscTools.getUserSelectedFilePath(
+				"Comparing - Load Elastic Transformation" );
+		if( null == fn_tnf )
 			return;
-		}
-		String fn_tnf = path+filename;
-
-		int intervals = MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
-
-		double [][]cx_direct = new double[intervals+3][intervals+3];
-		double [][]cy_direct = new double[intervals+3][intervals+3];
-
-		MiscTools.loadTransformation(fn_tnf, cx_direct, cy_direct);
-
 
 		// We ask the user for the raw deformation file.
-		od = new OpenDialog("Comparing - Load Raw Transformation", "");
-		path = od.getDirectory();
-		filename = od.getFileName();
+		String fn_tnf_raw = MiscTools.getUserSelectedFilePath(
+				"Comparing - Load Raw Transformation" );
 
-		if ((path == null) || (filename == null)) {
-			return;
-		}
-		String fn_tnf_raw = path + filename;
-
-		// We load the transformation raw file.
-		double[][] transformation_x = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double[][] transformation_y = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		MiscTools.loadRawTransformation(fn_tnf_raw, transformation_x,
-				transformation_y);
-
-		double warpingIndex = MiscTools.rawWarpingIndex(this.sourceImp,
-				this.targetImp, intervals, cx_direct, cy_direct, transformation_x, transformation_y);
+		double warpingIndex = MiscTools.elasticRawWarpingIndex( fn_tnf,
+				fn_tnf_raw, targetImp, sourceImp );
 
 		if(warpingIndex != -1)
 			IJ.log(" Warping index = " + warpingIndex);
@@ -888,7 +864,8 @@ public class IODialog extends Dialog implements ActionListener
 			IJ.log(" Warping index could not be evaluated because not a "
 					+ "single pixel matched after the deformation!");
 		// record macro call
-		record( IODialog.COMPARE_ELASTIC_RAW, fn_tnf, fn_tnf_raw );
+		record( IODialog.COMPARE_ELASTIC_RAW, fn_tnf, fn_tnf_raw,
+				targetImp.getTitle(), sourceImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/
