@@ -751,57 +751,28 @@ public class IODialog extends Dialog implements ActionListener
 	{
 
 		// We ask the user for the first raw deformation file.
-		OpenDialog od = new OpenDialog("Composing - Load First Raw Transformation", "");
-		String path = od.getDirectory();
-		String filename = od.getFileName();
-
-		if ((path == null) || (filename == null)) {
+		String fn_tnf_raw = MiscTools.getUserSelectedFilePath(
+				"Composing - Load First Raw Transformation", false );
+		if( null == fn_tnf_raw )
 			return;
-		}
-		String fn_tnf_raw = path + filename;
-
-		// We load the transformation raw file.
-		double[][] transformation_x_1 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double[][] transformation_y_1 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		MiscTools.loadRawTransformation(fn_tnf_raw, transformation_x_1, transformation_y_1);
-
 		// We ask the user for the second raw deformation file.
-		od = new OpenDialog("Composing - Load Second Raw Transformation", "");
-		path = od.getDirectory();
-		filename = od.getFileName();
-
-		if ((path == null) || (filename == null))
+		String fn_tnf_raw_2 = MiscTools.getUserSelectedFilePath(
+				"Composing - Load Second Raw Transformation", false );
+		if( null == fn_tnf_raw_2 )
 			return;
 
-		String fn_tnf_raw_2 = path + filename;
-
-		// We load the transformation raw file.
-		double[][] transformation_x_2 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double[][] transformation_y_2 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		MiscTools.loadRawTransformation(fn_tnf_raw_2, transformation_x_2, transformation_y_2);
-
-		double [][] outputTransformation_x = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double [][] outputTransformation_y = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-
-		// Now we compose them and get as result a raw transformation mapping.
-		MiscTools.composeRawTransformations(this.targetImp.getWidth(), this.targetImp.getHeight(),
-				transformation_x_1, transformation_y_1, transformation_x_2, transformation_y_2,
-				outputTransformation_x, outputTransformation_y);
-
-		// We ask the user for the raw deformation file where we will save the mapping table.
-		od = new OpenDialog("Composing - Save Raw Transformation", "");
-		path = od.getDirectory();
-		filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
+		// We ask the user for the raw deformation file where we will save
+		// the mapping table.
+		String fn_tnf_raw_out = MiscTools.getUserSelectedFilePath(
+				"Composing - Save Raw Transformation", true );
+		if( null == fn_tnf_raw_out )
 			return;
-		}
-		String fn_tnf_raw_out = path + filename;
 
-		MiscTools.saveRawTransformation(fn_tnf_raw_out, this.targetImp.getWidth(),
-				this.targetImp.getHeight(), outputTransformation_x, outputTransformation_y);
+		MiscTools.composeRawTransforms( fn_tnf_raw, fn_tnf_raw_2,
+				fn_tnf_raw_out, targetImp );
 		// record macro call
 		record( IODialog.COMPOSE_RAW, fn_tnf_raw, fn_tnf_raw_2,
-				fn_tnf_raw_out );
+				fn_tnf_raw_out, targetImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/

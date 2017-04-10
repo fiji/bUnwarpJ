@@ -2415,7 +2415,50 @@ public class MiscTools
 				transformation_x_1, transformation_y_1, transformation_x_2, transformation_y_2,
 				outputTransformation_x, outputTransformation_y);
 	}
+	/**
+	 * Compose raw transforms into another raw transform and save to file.
+	 * @param transfPath1 complete path to first raw transform
+	 * @param transfPath2 complete path to second raw transform
+	 * @param outputTransfPath complete path to output file
+	 * @param targetImp target image
+	 */
+	public static void composeRawTransforms(
+			String transfPath1,
+			String transfPath2,
+			String outputTransfPath,
+			ImagePlus targetImp )
+	{
+		// We load the first transformation raw file.
+		double[][] transformation_x_1 =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double[][] transformation_y_1 =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		MiscTools.loadRawTransformation( transfPath1, transformation_x_1,
+				transformation_y_1 );
 
+		// We load the second transformation raw file.
+		double[][] transformation_x_2 =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double[][] transformation_y_2 =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		MiscTools.loadRawTransformation( transfPath2, transformation_x_2,
+				transformation_y_2 );
+
+		double [][] outputTransformation_x =
+				new double[ targetImp.getHeight()][ targetImp.getWidth() ];
+		double [][] outputTransformation_y =
+				new double[ targetImp.getHeight()][ targetImp.getWidth() ];
+
+		// Now we compose them and get as result a raw transformation mapping.
+		MiscTools.composeRawTransformations( targetImp.getWidth(),
+				targetImp.getHeight(), transformation_x_1, transformation_y_1,
+				transformation_x_2, transformation_y_2,	outputTransformation_x,
+				outputTransformation_y );
+		// save into file
+		MiscTools.saveRawTransformation(outputTransfPath, targetImp.getWidth(),
+				targetImp.getHeight(), outputTransformation_x,
+				outputTransformation_y );
+	}
 	//------------------------------------------------------------------
 	/**
 	 * Compose two raw transformations (Bilinear interpolation)
