@@ -2744,41 +2744,33 @@ public class bUnwarpJ_ implements PlugIn
 
     /**
      * Compare two raw transforms loaded from file. The result is
-     * expressed using the warping index and displayed in the Log window.
+     * expressed using the warping index and displayed in the Log window. Both
+     * transforms have the same direction.
      * @param rawTransfPath1 complete path to first raw transform file
      * @param rawTransfPath2 complete path to second raw transform file
+     * @param targetTitle title of the target image
+     * @param sourceTitle title of the source image
      */
     public static void compareRawTransforms(
     		final String rawTransfPath1,
-    		final String rawTransfPath2 )
+    		final String rawTransfPath2,
+    		final String targetTitle,
+    		final String sourceTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	final ImagePlus sourceImp = WindowManager.getImage( sourceTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error("Error: " + targetTitle + " image not found!");
     		return;
     	}
-    	final double [][]transformation_x1 =
-    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-    	final double [][]transformation_y1 =
-    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-
-    	MiscTools.loadRawTransformation( rawTransfPath1,
-    			transformation_x1, transformation_y1 );
-
-    	final double [][]transformation_x2 =
-    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-    	final double [][]transformation_y2 =
-    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-
-    	MiscTools.loadRawTransformation( rawTransfPath2,
-    			transformation_x2, transformation_y2 );
-
-    	// Now we compare both transformations through the "warping index",
-    	double warpingIndex = MiscTools.rawWarpingIndex( md.getSourceImp(),
-    			md.getTargetImp(), transformation_x1, transformation_y1,
-    			transformation_x2, transformation_y2 );
-
+    	if( null == sourceImp )
+    	{
+    		IJ.error("Error: " + sourceTitle + " image not found!");
+    		return;
+    	}
+    	double warpingIndex = MiscTools.rawWarpingIndex( rawTransfPath1,
+    			rawTransfPath2, targetImp, sourceImp );
     	if( warpingIndex != -1 )
     		IJ.log( " Warping index = " + warpingIndex );
     	else

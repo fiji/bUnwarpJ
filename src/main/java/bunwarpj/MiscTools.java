@@ -3640,4 +3640,42 @@ public class MiscTools
 				transformation_y);
 		return warpingIndex;
 	}
+	/**
+	 * Calculate warping index between two raw transforms loaded from file.
+	 * Both transforms have the same direction.
+	 *
+	 * @param rawTransfPath1 complete path of first raw transform file
+	 * @param rawTransfPath2 complete path of second raw transform file
+	 * @param targetImp target image
+	 * @param sourceImp source image
+	 * @return warping index
+	 */
+	public static double rawWarpingIndex(
+			String rawTransfPath1,
+			String rawTransfPath2,
+			ImagePlus targetImp,
+			ImagePlus sourceImp )
+	{
+		final double [][]transformation_x1 =
+				new double[ targetImp.getHeight()][ targetImp.getWidth() ];
+		final double [][]transformation_y1 =
+				new double[ targetImp.getHeight()][ targetImp.getWidth() ];
+
+		MiscTools.loadRawTransformation( rawTransfPath1,
+				transformation_x1, transformation_y1 );
+
+		final double [][]transformation_x2 =
+				new double[ targetImp.getHeight()][ targetImp.getWidth() ];
+		final double [][]transformation_y2 =
+				new double[ targetImp.getHeight()][ targetImp.getWidth() ];
+
+		MiscTools.loadRawTransformation( rawTransfPath2,
+				transformation_x2, transformation_y2 );
+
+		// Now we compare both transformations through the "warping index",
+		double warpingIndex = MiscTools.rawWarpingIndex( sourceImp,
+				targetImp, transformation_x1, transformation_y1,
+				transformation_x2, transformation_y2 );
+		return warpingIndex;
+	}
 } /* End of MiscTools class */
