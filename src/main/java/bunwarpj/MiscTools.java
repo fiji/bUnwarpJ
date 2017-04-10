@@ -2459,6 +2459,48 @@ public class MiscTools
 				targetImp.getHeight(), outputTransformation_x,
 				outputTransformation_y );
 	}
+	/**
+	 * Compose two elastic transform into a raw transform and save it to file
+	 * @param elasticTransfPath1 complete path to first elastic transform
+	 * @param elasticTransfPath2 complete path to second elastic transform
+	 * @param outputRawTransfPath complete path to output raw transform file
+	 * @param targetImp target image
+	 */
+	public static void composeElasticTransforms(
+			final String elasticTransfPath1,
+			final String elasticTransfPath2,
+			final String outputRawTransfPath,
+			final ImagePlus targetImp )
+	{
+		int intervals =
+				MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath1 );
+
+		double [][]cx1 = new double[intervals+3][intervals+3];
+		double [][]cy1 = new double[intervals+3][intervals+3];
+
+		MiscTools.loadTransformation(elasticTransfPath1, cx1, cy1);
+
+		intervals =
+				MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath2 );
+
+		double [][]cx2 = new double[intervals+3][intervals+3];
+		double [][]cy2 = new double[intervals+3][intervals+3];
+
+		MiscTools.loadTransformation(elasticTransfPath1, cx2, cy2);
+
+		double [][] outputTransformation_x =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double [][] outputTransformation_y =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+
+		// Now we compose them and get as result a raw transformation mapping.
+		MiscTools.composeElasticTransformations( targetImp, intervals, cx1, cy1,
+				cx2, cy2, outputTransformation_x, outputTransformation_y );
+
+		MiscTools.saveRawTransformation( outputRawTransfPath,
+				targetImp.getWidth(), targetImp.getHeight(),
+				outputTransformation_x,	outputTransformation_y );
+	}
 	//------------------------------------------------------------------
 	/**
 	 * Compose two raw transformations (Bilinear interpolation)

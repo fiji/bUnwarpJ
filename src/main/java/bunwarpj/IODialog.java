@@ -652,65 +652,29 @@ public class IODialog extends Dialog implements ActionListener
 	 */
 	private void composeElasticTransformations ()
 	{
-
 		// We ask the user for the first transformation file
-		OpenDialog od = new OpenDialog("Composing - Load First Elastic Transformation", "");
-		String path = od.getDirectory();
-		String filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
+		final String elasticTransfPath1 = MiscTools.getUserSelectedFilePath(
+				"Composing - Load First Elastic Transformation", false );
+		if( null == elasticTransfPath1 )
 			return;
-		}
-		final String elasticTransfPath1 = path+filename;
-
-		int intervals =
-				MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath1 );
-
-		double [][]cx1 = new double[intervals+3][intervals+3];
-		double [][]cy1 = new double[intervals+3][intervals+3];
-
-		MiscTools.loadTransformation(elasticTransfPath1, cx1, cy1);
-
-
 		// We ask the user for the second transformation file
-		od = new OpenDialog("Composing - Load Second Elastic Transformation", "");
-		path = od.getDirectory();
-		filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
+		final String elasticTransfPath2 = MiscTools.getUserSelectedFilePath(
+				"Composing - Load Second Elastic Transformation", false );
+		if( null == elasticTransfPath2 )
 			return;
-		}
-		final String elasticTransfPath2 = path+filename;
-
-		intervals =
-				MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath2 );
-
-		double [][]cx2 = new double[intervals+3][intervals+3];
-		double [][]cy2 = new double[intervals+3][intervals+3];
-
-		MiscTools.loadTransformation(elasticTransfPath1, cx2, cy2);
-
-		double [][] outputTransformation_x = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double [][] outputTransformation_y = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-
-		// Now we compose them and get as result a raw transformation mapping.
-		MiscTools.composeElasticTransformations(this.targetImp, intervals,
-				cx1, cy1, cx2, cy2, outputTransformation_x, outputTransformation_y);
-
-		// We ask the user for the raw deformation file where we will save the mapping table.
-		od = new OpenDialog("Composing - Save Raw Transformation", "");
-		path = od.getDirectory();
-		filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
+		// We ask the user for the raw deformation file where we will save the
+		// mapping table.
+		String fn_tnf_raw = MiscTools.getUserSelectedFilePath(
+				"Composing - Save Raw Transformation", true );
+		if( null == fn_tnf_raw )
 			return;
-		}
-		String fn_tnf_raw = path + filename;
 
-		MiscTools.saveRawTransformation(fn_tnf_raw, this.targetImp.getWidth(),
-				this.targetImp.getHeight(), outputTransformation_x, outputTransformation_y);
+		MiscTools.composeElasticTransforms( elasticTransfPath1,
+				elasticTransfPath2, fn_tnf_raw, targetImp );
 		// record macro call
 		record( IODialog.COMPOSE_ELASTIC, elasticTransfPath1,
-				elasticTransfPath2, fn_tnf_raw );
+				elasticTransfPath2, fn_tnf_raw, targetImp.getTitle() );
 	}
-
 
 	/*------------------------------------------------------------------*/
 	/**
