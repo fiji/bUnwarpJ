@@ -641,6 +641,37 @@ public class MiscTools
 			warpingIndex = -1;
 		return warpingIndex;
 	}
+	/**
+	 * Save elastic transform as raw transform.
+	 * @param elasticTransfPath complete path to elastic transform
+	 * @param rawTransfPath complete path to raw transform
+	 * @param targetImp target image
+	 */
+	public static void saveElasticAsRaw(
+			String elasticTransfPath,
+			String rawTransfPath,
+			ImagePlus targetImp )
+	{
+		int intervals = MiscTools.numberOfIntervalsOfTransformation(
+				elasticTransfPath );
+
+		double [][]cx = new double[intervals+3][intervals+3];
+		double [][]cy = new double[intervals+3][intervals+3];
+
+		MiscTools.loadTransformation(elasticTransfPath, cx, cy);
+
+		// We calculate the transformation raw table.
+		double[][] transformation_x =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double[][] transformation_y =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+
+		MiscTools.convertElasticTransformationToRaw( targetImp, intervals, cx,
+				cy, transformation_x, transformation_y );
+
+		MiscTools.saveRawTransformation(rawTransfPath, targetImp.getWidth(),
+				targetImp.getHeight(), transformation_x, transformation_y );
+	}
 	//------------------------------------------------------------------
 	/**
 	 * Calculate the raw transformation mapping from B-spline

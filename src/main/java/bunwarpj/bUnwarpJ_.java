@@ -2758,38 +2758,21 @@ public class bUnwarpJ_ implements PlugIn
      * Convert an elastic transform to raw format and save it to file.
      * @param elasticTransfPath complete path to input elastic transform file
      * @param rawTransfPath complete path to output raw transform file
+     * @param targetTitle title of the target image
      */
     public static void convertToRaw(
     		final String elasticTransfPath,
-    		final String rawTransfPath )
+    		final String rawTransfPath,
+    		final String targetTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error("Error: " + targetTitle + " image not found!");
     		return;
     	}
-    	// read number of intervals from direct transform file
-    	int intervals =
-    			MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath );
-    	// create variables to store coefficients
-		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
-		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
-		// read coefficients from file
-		MiscTools.loadTransformation( elasticTransfPath, cx, cy );
-
-		// raw transform table
-		final double [][]transformation_x =
-	    	new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-		final double [][]transformation_y =
-			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-		// convert from B-spline representation to raw
-		MiscTools.convertElasticTransformationToRaw( md.getTargetImp(),
-				intervals, cx, cy, transformation_x, transformation_y );
-		// save to file
-		MiscTools.saveRawTransformation( rawTransfPath,
-				md.getTarget().getWidth(), md.getTarget().getHeight(),
-				transformation_x, transformation_y );
+    	MiscTools.saveElasticAsRaw( elasticTransfPath, rawTransfPath,
+    			targetImp );
     }
     /**
      * Convert an elastic transform to raw format and save it to file.

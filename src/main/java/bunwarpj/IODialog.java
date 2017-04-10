@@ -460,40 +460,20 @@ public class IODialog extends Dialog implements ActionListener
 	private void saveTransformationInRaw ()
 	{
 		// We ask the user for the elastic transformation file
-		final OpenDialog od = new OpenDialog("Load elastic transformation file", "");
-		final String path = od.getDirectory();
-		final String filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
+		String fn_tnf = MiscTools.getUserSelectedFilePath(
+				"Load elastic transformation file", false );
+		if( null == fn_tnf )
 			return;
-		}
-		String fn_tnf = path+filename;
-
-		int intervals=MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
-
-		double [][]cx = new double[intervals+3][intervals+3];
-		double [][]cy = new double[intervals+3][intervals+3];
-
-		MiscTools.loadTransformation(fn_tnf, cx, cy);
-
-
 		// We ask the user for the raw deformation file.
-		OpenDialog od_raw = new OpenDialog("Saving in raw - select raw transformation file", "");
-		String path_raw = od_raw.getDirectory();
-		String filename_raw = od_raw.getFileName();
-		if ((path_raw == null) || (filename_raw == null))
+		String fn_tnf_raw = MiscTools.getUserSelectedFilePath(
+				"Saving in raw - select raw transformation file", true );
+		if( null == fn_tnf_raw )
 			return;
 
-		String fn_tnf_raw = path_raw + filename_raw;
-
-		// We calculate the transformation raw table.
-		double[][] transformation_x = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double[][] transformation_y = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-
-		MiscTools.convertElasticTransformationToRaw(this.targetImp, intervals, cx, cy, transformation_x, transformation_y);
-
-		MiscTools.saveRawTransformation(fn_tnf_raw, this.targetImp.getWidth(), this.targetImp.getHeight(), transformation_x, transformation_y);
+		MiscTools.saveElasticAsRaw( fn_tnf, fn_tnf_raw, targetImp );
 		// record macro call
-		record( IODialog.CONVERT_TO_RAW, fn_tnf, fn_tnf_raw );
+		record( IODialog.CONVERT_TO_RAW, fn_tnf, fn_tnf_raw,
+				targetImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/
