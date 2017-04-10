@@ -1788,22 +1788,8 @@ public class bUnwarpJ_ implements PlugIn
        if(sourceImp == null)
            IJ.error("\nError: " + fn_source + " could not be opened\n");
        
-       // First deformation.
-       int intervals = MiscTools.numberOfIntervalsOfTransformation(fn_tnf_2);
-
-       double [][]cx_direct = new double[intervals+3][intervals+3];
-       double [][]cy_direct = new double[intervals+3][intervals+3];
-
-       MiscTools.loadTransformation(fn_tnf_2, cx_direct, cy_direct);      
-
-       intervals = MiscTools.numberOfIntervalsOfTransformation(fn_tnf_1);
-
-       double [][]cx_inverse = new double[intervals+3][intervals+3];
-       double [][]cy_inverse = new double[intervals+3][intervals+3];
-
-       MiscTools.loadTransformation(fn_tnf_1, cx_inverse, cy_inverse);
-       
-       double warpingIndex = MiscTools.warpingIndex(sourceImp, targetImp, intervals, cx_direct, cy_direct, cx_inverse, cy_inverse);
+       double warpingIndex = MiscTools.oppositeWarpingIndex( fn_tnf_2, fn_tnf_1,
+    		   targetImp, sourceImp );
 
        if(warpingIndex != -1)
            IJ.log(" Warping index = " + warpingIndex);             
@@ -2660,42 +2646,30 @@ public class bUnwarpJ_ implements PlugIn
      * expressed using the warping index and displayed in the Log window.
      * @param directTransfPath complete path to direct elastic transform file
      * @param inverseTransfPath complete path to inverse elastic transform file
+     * @param targetTitle title of the target image
+     * @param sourceTitle title of the source image
      */
     public static void compareOppositeElasticTransforms(
     		final String directTransfPath,
-    		final String inverseTransfPath )
+    		final String inverseTransfPath,
+    		final String targetTitle,
+    		final String sourceTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	final ImagePlus sourceImp = WindowManager.getImage( sourceTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error("Error: " + targetTitle + " image not found!");
     		return;
     	}
-    	// read number of intervals from direct transform file
-    	int intervals =
-    			MiscTools.numberOfIntervalsOfTransformation( directTransfPath );
-    	// create variables to store coefficients
-		double [][]cx_direct = new double[ intervals+3 ][ intervals+3 ];
-		double [][]cy_direct = new double[ intervals+3 ][ intervals+3 ];
-		// read coefficients from file
-		MiscTools.loadTransformation( directTransfPath, cx_direct, cy_direct );
+    	if( null == sourceImp )
+    	{
+    		IJ.error("Error: " + sourceTitle + " image not found!");
+    		return;
+    	}
 
-		// read number of intervals from inverse transform file
-		intervals =
-			MiscTools.numberOfIntervalsOfTransformation( inverseTransfPath );
-		// create variables to store coefficients
-		double [][]cx_inverse = new double[intervals+3][intervals+3];
-		double [][]cy_inverse = new double[intervals+3][intervals+3];
-		// read coefficients from file
-		MiscTools.loadTransformation(
-				inverseTransfPath, cx_inverse, cy_inverse );
-
-		// Now we compare both transformations through the "warping index",
-		// which is a method equivalent to our consistency measure.
-
-		double warpingIndex = MiscTools.warpingIndex( md.getSourceImp(),
-				md.getTargetImp(), intervals, cx_direct, cy_direct, cx_inverse,
-				cy_inverse );
+    	double warpingIndex = MiscTools.oppositeWarpingIndex( directTransfPath,
+    			inverseTransfPath, targetImp, sourceImp );
 
 		if( warpingIndex != -1 )
 			IJ.log( " Warping index = " + warpingIndex );
@@ -2703,6 +2677,9 @@ public class bUnwarpJ_ implements PlugIn
 			IJ.log( " Warping index could not be evaluated because not a single"
 					+ "pixel matched after the deformation!");
     }
+
+
+
     /**
      * Compare an elastic and a raw transform loaded from file. The result is
      * expressed using the warping index and displayed in the Log window.

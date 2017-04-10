@@ -465,7 +465,46 @@ public class MiscTools
 		}
 	    return coords;
 	}
+	/**
+	 * Calculate the warping index between two opposite elastic deformations.
+	 * Note: the only difference between the warping index and the consistency
+	 * term formulae is a squared root: warping index = sqrt(consistency error)
+	 * @param directTransfPath complete path to direct elastic transform
+	 * @param inverseTransfPath complete path to inverse elastic transform
+	 * @param targetImp target image
+	 * @param sourceImp source image
+	 * @return geometric error (warping index) between both deformations
+	 */
+	public static double oppositeWarpingIndex(
+			final String directTransfPath,
+			final String inverseTransfPath,
+			final ImagePlus targetImp,
+			final ImagePlus sourceImp)
+	{
+		// read number of intervals from direct transform file
+    	int intervals =
+    			MiscTools.numberOfIntervalsOfTransformation( directTransfPath );
+    	// create variables to store coefficients
+		double [][]cx_direct = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy_direct = new double[ intervals+3 ][ intervals+3 ];
+		// read coefficients from file
+		MiscTools.loadTransformation( directTransfPath, cx_direct, cy_direct );
 
+		// read number of intervals from inverse transform file
+		intervals =
+			MiscTools.numberOfIntervalsOfTransformation( inverseTransfPath );
+		// create variables to store coefficients
+		double [][]cx_inverse = new double[intervals+3][intervals+3];
+		double [][]cy_inverse = new double[intervals+3][intervals+3];
+		// read coefficients from file
+		MiscTools.loadTransformation(
+				inverseTransfPath, cx_inverse, cy_inverse );
+
+		// Now we compare both transformations through the "warping index",
+		// which is a method equivalent to our consistency measure.
+		return MiscTools.warpingIndex( sourceImp, targetImp, intervals,
+				cx_direct, cy_direct, cx_inverse, cy_inverse );
+	}
 	/**
 	 * Calculate the warping index between two opposite elastic deformations.
 	 * Note: the only difference between the warping index and the consistency 
