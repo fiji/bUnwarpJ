@@ -777,37 +777,19 @@ public class IODialog extends Dialog implements ActionListener
 	{
 
 		// We ask the user for the first raw deformation file.
-		OpenDialog od = new OpenDialog("Comparing - Load First Raw Transformation", "");
-		String path = od.getDirectory();
-		String filename = od.getFileName();
-
-		if ((path == null) || (filename == null)) {
+		String fn_tnf_raw = MiscTools.getUserSelectedFilePath(
+				"Comparing - Load First Raw Transformation", false );
+		if( null == fn_tnf_raw )
 			return;
-		}
-		String fn_tnf_raw = path + filename;
-
-		// We load the transformation raw file.
-		double[][] transformation_x_1 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double[][] transformation_y_1 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		MiscTools.loadRawTransformation(fn_tnf_raw, transformation_x_1, transformation_y_1);
 
 		// We ask the user for the second raw deformation file.
-		od = new OpenDialog("Comparing - Load Second Raw Transformation", "");
-		path = od.getDirectory();
-		filename = od.getFileName();
-
-		if ((path == null) || (filename == null))
+		String fn_tnf_raw_2 = MiscTools.getUserSelectedFilePath(
+				"Comparing - Load Second Raw Transformation", false );
+		if( null == fn_tnf_raw_2 )
 			return;
 
-		String fn_tnf_raw_2 = path + filename;
-
-		// We load the transformation raw file.
-		double[][] transformation_x_2 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		double[][] transformation_y_2 = new double[this.targetImp.getHeight()][this.targetImp.getWidth()];
-		MiscTools.loadRawTransformation(fn_tnf_raw_2, transformation_x_2, transformation_y_2);
-
-		double warpingIndex = MiscTools.rawWarpingIndex(this.sourceImp,
-				this.targetImp, transformation_x_1, transformation_y_1, transformation_x_2, transformation_y_2);
+		double warpingIndex = MiscTools.rawWarpingIndex( fn_tnf_raw,
+				fn_tnf_raw_2, targetImp, sourceImp );
 
 		if(warpingIndex != -1)
 			IJ.log(" Warping index = " + warpingIndex);
@@ -815,7 +797,8 @@ public class IODialog extends Dialog implements ActionListener
 			IJ.log(" Warping index could not be evaluated because not a single"
 					+ " pixel matched after the deformation!");
 		// record macro call
-		record( IODialog.COMPARE_RAW, fn_tnf_raw, fn_tnf_raw_2 );
+		record( IODialog.COMPARE_RAW, fn_tnf_raw, fn_tnf_raw_2,
+				targetImp.getTitle(), sourceImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/
