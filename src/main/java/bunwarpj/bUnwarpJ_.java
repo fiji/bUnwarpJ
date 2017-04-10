@@ -2936,49 +2936,30 @@ public class bUnwarpJ_ implements PlugIn
      * @param rawTransfPath complete path to raw transform file
      * @param elasticTransfPath complete path to elastic transform file
      * @param outputRawTransfPath complete path to output raw transform file
+     * @param targetTitle title of the target image
+     * @param sourceTitle title of the source image
      */
     public static void composeRawElasticTransforms(
     		final String rawTransfPath,
     		final String elasticTransfPath,
-    		final String outputRawTransfPath )
+    		final String outputRawTransfPath,
+    		final String targetTitle,
+    		final String sourceTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	final ImagePlus sourceImp = WindowManager.getImage( sourceTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error( "Error: " + targetTitle + " image not found!" );
     		return;
     	}
-    	final double [][]transformation_x =
-    			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-    	final double [][]transformation_y =
-    			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-
-    	MiscTools.loadRawTransformation( rawTransfPath,
-    			transformation_x, transformation_y );
-
-    	// read number of intervals from elastic transform file
-    	int intervals =
-    			MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath );
-    	// create variables to store coefficients
-		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
-		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
-		// read coefficients from file
-		MiscTools.loadTransformation( elasticTransfPath, cx, cy );
-    	
-		// output raw transform tables
-		double [][] outputTransformation_x =
-			new double[ md.getTarget().getHeight() ][ md.getTarget().getWidth() ];
-		double [][] outputTransformation_y =
-			new double[ md.getTarget().getHeight() ][ md.getTarget().getWidth() ];
-
-		// compose them and get as result a raw transformation mapping
-		MiscTools.composeRawElasticTransformations( md.getTargetImp(),
-				intervals,	transformation_x, transformation_y, cx, cy,
-				outputTransformation_x,	outputTransformation_y );
-		// save to file
-		MiscTools.saveRawTransformation( outputRawTransfPath,
-				md.getTarget().getWidth(), md.getTarget().getHeight(),
-				outputTransformation_x, outputTransformation_y );
+    	if( null == sourceImp )
+    	{
+    		IJ.error( "Error: " + sourceTitle + " image not found!" );
+    		return;
+    	}
+    	MiscTools.composeRawElasticTransforms( rawTransfPath, elasticTransfPath,
+    			outputRawTransfPath, targetImp, sourceImp );
     }
     /**
      * Adapt the B-spline coefficients to a new image size.

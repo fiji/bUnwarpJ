@@ -3610,9 +3610,12 @@ public class MiscTools
 	/**
 	 * Show a non-recordable dialog so the user selects a file.
 	 * @param dialogTitle displayed dialog title
+	 * @param saveDialog flag to create save (if true) or load dialog
 	 * @return complete path to file or null if dialog is cancelled.
 	 */
-	public static String getUserSelectedFilePath( String dialogTitle )
+	public static String getUserSelectedFilePath(
+			String dialogTitle,
+			boolean saveDialog )
 	{
 		String path = null;
 		String filename = null;
@@ -3624,6 +3627,8 @@ public class MiscTools
 			chooser.setDialogTitle( dialogTitle );
 			chooser.setCurrentDirectory( new File( currentFolder ));
 			chooser.setVisible( true );
+			chooser.setDialogType( saveDialog ? JFileChooser.SAVE_DIALOG :
+				JFileChooser.OPEN_DIALOG );
 			final int result = chooser.showOpenDialog( null );
 			if( result == JFileChooser.APPROVE_OPTION )
 			{
@@ -3634,7 +3639,7 @@ public class MiscTools
 		else
 		{
 			FileDialog fd = new FileDialog( IJ.getInstance(),
-					dialogTitle, FileDialog.LOAD );
+					dialogTitle, saveDialog ? FileDialog.SAVE : FileDialog.LOAD );
 			fd.setDirectory( currentFolder );
 			fd.setVisible( true );
 			path = fd.getDirectory() + File.separator;
@@ -3716,5 +3721,51 @@ public class MiscTools
 				targetImp, transformation_x1, transformation_y1,
 				transformation_x2, transformation_y2 );
 		return warpingIndex;
+	}
+	/**
+	 * Compose a raw and an elastic transform and save result into file.
+	 *
+	 * @param rawTransfPath complete path to raw transform
+	 * @param elasticTransfPath complete path to elastic transform
+	 * @param outputPath complete output file path
+	 * @param targetImp target image
+	 * @param sourceImp source image
+	 */
+	public static void composeRawElasticTransforms(
+			final String rawTransfPath,
+			final String elasticTransfPath,
+			final String outputPath,
+			final ImagePlus targetImp,
+			final ImagePlus sourceImp )
+	{
+		double[][] transformation_x =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double[][] transformation_y =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+
+		MiscTools.loadRawTransformation(
+				rawTransfPath, transformation_x, transformation_y );
+
+		int intervals =
+				MiscTools.numberOfIntervalsOfTransformation( elasticTransfPath );
+
+		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
+		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
+
+		MiscTools.loadTransformation( elasticTransfPath, cx, cy );
+
+		double [][] outputTransformation_x =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double [][] outputTransformation_y =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+
+		// Now we compose them and get as result a raw transformation mapping.
+		MiscTools.composeRawElasticTransformations( targetImp, intervals,
+				transformation_x, transformation_y, cx, cy,
+				outputTransformation_x, outputTransformation_y);
+
+		MiscTools.saveRawTransformation( outputPath, targetImp.getWidth(),
+				targetImp.getHeight(), outputTransformation_x,
+				outputTransformation_y );
 	}
 } /* End of MiscTools class */
