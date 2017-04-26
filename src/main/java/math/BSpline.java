@@ -33,25 +33,33 @@ public class BSpline
 	/**
 	 * <p>
 	 * Ref: A. Muñoz-Barrutia, T. Blu, M. Unser, "Least-Squares Image Resizing
-	 * Using Finite Differences," IEEE Transactions on Image Processing, vol.
-	 * 10, n. 9, September 2001.
-	 * Use:
-	 *  out(x) = input(x/scale); scale > 1 expansion; a < 1 reduction.
-	 * Use n=n2
-	 *  if (n1==-1) the standard method (interpolation and resampling) is
-	 *              applied.
-	 * If (n=n1=n2), the orthogonal projection is computed. The error is the
-	 *               minimum in the least-squares sense.
-	 * If ((n1 > -1) && (n1<n2)), the oblique projection is computed. The error
-	 *                            is slightly greater than the case above.
+	 * Using Finite Differences," IEEE Transactions on Image Processing, vol. 10,
+	 * n. 9, September 2001.
 	 * </p>
-	 *  
+	 * <p>
+	 * Use: {@code out(x) = input(x/scale)}; {@code scale > 1} expansion;
+	 * {@code a < 1} reduction.
+	 * </p>
+	 * <p>
+	 * Use {@code n=n2}:
+	 * </p>
+	 * <ul>
+	 * <li>if {@code (n1==-1)} the standard method (interpolation and resampling)
+	 * is applied.</li>
+	 * <li>If {@code (n=n1=n2)}, the orthogonal projection is computed. The error
+	 * is the minimum in the least-squares sense.</li>
+	 * <li>If {@code ((n1 > -1) && (n1<n2))}, the oblique projection is computed.
+	 * The error is slightly greater than the case above.</li>
+	 * </ul>
+	 * 
 	 * @param input input signal
 	 * @param n degree of the interpolation spline. It can vary from 0 to 3.
 	 * @param n1 degree of the analysis spline. It can vary from -1 to 3.
-	 * @param n2 degree of the synthesis spline. It can vary from 0 to 3. 
-	 * @param scale zoom factor (scale > 1 expansion; scale < 1 reduction)
-	 * @param coefOrSamples if working with coefficients coefOrSamples is true; if working with samples coefOrSamples is false
+	 * @param n2 degree of the synthesis spline. It can vary from 0 to 3.
+	 * @param scale zoom factor ({@code scale > 1} expansion; {@code scale < 1}
+	 *          reduction)
+	 * @param coefOrSamples if working with coefficients coefOrSamples is true; if
+	 *          working with samples coefOrSamples is false
 	 * @return out signal
 	 */
 	public static double[] resize1D(

@@ -923,10 +923,9 @@ public class BSplineModel implements Runnable
 	}
 	//------------------------------------------------------------------
 	/**
-	 * fromCurrent=true  --> The interpolation is prepared to be done
-	 *                       from the current image in the pyramid.
-	 * fromCurrent=false --> The interpolation is prepared to be done
-	 *                       from the original image.
+	 * If {@code fromCurrent} is true, the interpolation is prepared to be done
+	 * from the current image in the pyramid. Otherwise, the interpolation is
+	 * prepared to be done from the original image.
 	 *
 	 * @param x x- point coordinate
 	 * @param y y- point coordinate
@@ -1022,22 +1021,27 @@ public class BSplineModel implements Runnable
 	
 	//------------------------------------------------------------------
 	/**
-	 * Prepare for interpolation and interpolate 
-	 * 
-	 * fromSub = true --> The interpolation is done from the subsampled
-	 *                    version of the image
+	 * Prepare for interpolation and interpolate
+	 * <ul>
+	 * <li>fromSub = true: The interpolation is done from the subsampled version
+	 * of the image</li>
+	 * </ul>
+	 * <p>
 	 * else:
-	 * 
-	 * fromCurrent=true  --> The interpolation is done
-	 *                       from the current image in the pyramid.
-	 * fromCurrent=false --> The interpolation is done
-	 *                       from the original image.
+	 * </p>
+	 * <ul>
+	 * <li>fromCurrent=true: The interpolation is done from the current image in
+	 * the pyramid.</li>
+	 * <li>fromCurrent=false: The interpolation is done from the original image.
+	 * </li>
+	 * </ul>
 	 *
 	 * @param x x- point coordinate
 	 * @param y y- point coordinate
-	 * @param fromSub flat to determine to do the interpolation from the subsampled version of the image 
+	 * @param fromSub flat to determine to do the interpolation from the
+	 *          subsampled version of the image
 	 * @param fromCurrent flag to determine the image to do the interpolation from
-	 * 		   interpolated value
+	 *          interpolated value
 	 */
 	public double prepareForInterpolationAndInterpolateI(
 			double x,
@@ -1169,22 +1173,27 @@ public class BSplineModel implements Runnable
 	/**
 	 * Prepare for interpolation and interpolate the image value and its
 	 * derivatives
-	 * 
-	 * fromSub = true --> The interpolation is done from the subsampled
-	 *                    version of the image
+	 * <ul>
+	 * <li>fromSub = true: The interpolation is done from the subsampled version
+	 * of the image</li>
+	 * </ul>
+	 * <p>
 	 * else:
-	 * 
-	 * fromCurrent=true  --> The interpolation is done
-	 *                       from the current image in the pyramid.
-	 * fromCurrent=false --> The interpolation is done
-	 *                       from the original image.
+	 * </p>
+	 * <ul>
+	 * <li>fromCurrent=true: The interpolation is done from the current image in
+	 * the pyramid.</li>
+	 * <li>fromCurrent=false: The interpolation is done from the original image.
+	 * </li>
+	 * </ul>
 	 *
 	 * @param x x- point coordinate
 	 * @param y y- point coordinate
 	 * @param D output, interpolation the X and Y derivatives of the image
-	 * @param fromSub flat to determine to do the interpolation from the subsampled version of the image 
+	 * @param fromSub flat to determine to do the interpolation from the
+	 *          subsampled version of the image
 	 * @param fromCurrent flag to determine the image to do the interpolation from
-	 * 		   interpolated value
+	 *          interpolated value
 	 */
 	public double prepareForInterpolationAndInterpolateIAndD(
 			double x,

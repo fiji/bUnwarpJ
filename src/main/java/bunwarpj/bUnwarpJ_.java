@@ -2778,7 +2778,7 @@ public class bUnwarpJ_ implements PlugIn
      * Convert an elastic transform to raw format and save it to file.
      * @param rawTransfPath complete path to input raw transform file
      * @param elasticTransfPath complete path to output elastic transform file
-     * @param intervals number of intervals in the B-spline grid
+     * @param strIntervals number of intervals in the B-spline grid
      */
     public static void convertToElastic(
     		final String rawTransfPath,
