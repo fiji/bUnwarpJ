@@ -672,6 +672,38 @@ public class MiscTools
 		MiscTools.saveRawTransformation(rawTransfPath, targetImp.getWidth(),
 				targetImp.getHeight(), transformation_x, transformation_y );
 	}
+	/**
+	 * Save raw transform as elastic.
+	 * @param rawTransfPath complete path to input raw transform
+	 * @param elasticTransfPath complete path to output elastic transform
+	 * @param intervals number of intervals between B-spline coefficients
+	 * @param targetImp target image
+	 */
+	public static void saveRawAsElastic(
+			String rawTransfPath,
+			String elasticTransfPath,
+			int intervals,
+			ImagePlus targetImp )
+	{
+		double[][] transformation_x =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double[][] transformation_y =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+
+		MiscTools.loadRawTransformation( rawTransfPath, transformation_x,
+				transformation_y );
+
+		// We calculate the B-spline transformation coefficients.
+		double [][]cx = new double[ intervals + 3 ][ intervals + 3 ];
+		double [][]cy = new double[ intervals + 3 ][ intervals + 3 ];
+
+		MiscTools.convertRawTransformationToBSpline( targetImp, intervals,
+				transformation_x, transformation_y, cx, cy );
+
+		MiscTools.saveElasticTransformation( intervals, cx, cy,
+				elasticTransfPath );
+	}
+
 	//------------------------------------------------------------------
 	/**
 	 * Calculate the raw transformation mapping from B-spline

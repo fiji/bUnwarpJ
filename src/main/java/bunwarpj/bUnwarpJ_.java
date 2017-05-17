@@ -2779,41 +2779,22 @@ public class bUnwarpJ_ implements PlugIn
      * @param rawTransfPath complete path to input raw transform file
      * @param elasticTransfPath complete path to output elastic transform file
      * @param strIntervals number of intervals in the B-spline grid
+     * @param targetTitle title of the target image
      */
     public static void convertToElastic(
     		final String rawTransfPath,
     		final String elasticTransfPath,
-    		final String strIntervals )
+    		final String strIntervals,
+    		final String targetTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error("Error: " + targetTitle + " image not found!");
     		return;
     	}
-    	// integer value of intervals
-    	final int intervals = Integer.parseInt( strIntervals );
-
-    	// raw transform table
-    	final double [][]transformation_x =
-    	   	new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-    	final double [][]transformation_y =
-    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-    	
-    	// load raw transform
-    	MiscTools.loadRawTransformation( rawTransfPath, transformation_x,
-    			transformation_y);
-    	   	
-    	// create variables to store B-spline coefficients
-		double [][]cx = new double[ intervals+3 ][ intervals+3 ];
-		double [][]cy = new double[ intervals+3 ][ intervals+3 ];
-		// convert raw transform to B-spline format
-		MiscTools.convertRawTransformationToBSpline( md.getTargetImp(),
-				intervals, transformation_x, transformation_y, cx, cy );
-
-		// save to file
-		MiscTools.saveElasticTransformation( intervals, cx, cy,
-				elasticTransfPath );
+    	MiscTools.saveRawAsElastic(rawTransfPath, elasticTransfPath,
+    			Integer.parseInt( strIntervals ), targetImp );
     }
     /**
      * Compose two elastic transforms into a raw transform.

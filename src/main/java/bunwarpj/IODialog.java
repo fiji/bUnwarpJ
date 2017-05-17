@@ -482,48 +482,31 @@ public class IODialog extends Dialog implements ActionListener
 	 */
 	private void saveTransformationInElastic ()
 	{
-		// We ask the user for the input raw transformation file
-		final OpenDialog od = new OpenDialog("Load raw transformation file", "");
-		final String path = od.getDirectory();
-		final String filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
+		// We ask the user for the raw transformation file
+		String fn_tnf = MiscTools.getUserSelectedFilePath(
+				"Load raw transformation file", false );
+		if( null == fn_tnf )
 			return;
-		}
-		String fn_tnf = path+filename;
-
-		double[][] transformation_x = new double[targetImp.getHeight()] [targetImp.getWidth()];
-		double[][] transformation_y = new double[targetImp.getHeight()] [targetImp.getWidth()];
-
-		MiscTools.loadRawTransformation(fn_tnf, transformation_x, transformation_y);
-
-		// We ask the user for the output elastic deformation file.
-		OpenDialog od_elastic = new OpenDialog("Saving in elastic - select elastic transformation file", "");
-		String path_elastic = od_elastic.getDirectory();
-		String filename_elastic = od_elastic.getFileName();
-		if ((path_elastic == null) || (filename_elastic == null))
+		// We ask the user for the elastic deformation file.
+		String fn_tnf_elastic = MiscTools.getUserSelectedFilePath(
+				"Saving in elastic - select elastic transformation file", true );
+		if( null == fn_tnf_elastic )
 			return;
-
-		String fn_tnf_elastic = path_elastic + filename_elastic;
-
 
 		// We ask the user for the number of intervals in the B-spline grid.
-		String sInput = JOptionPane.showInputDialog(null, "Number of intervals for B-spline grid?", "Save as B-spline coefficients", JOptionPane.QUESTION_MESSAGE);
+		String sInput = JOptionPane.showInputDialog( null,
+				"Number of intervals for B-spline grid?",
+				"Save as B-spline coefficients", JOptionPane.QUESTION_MESSAGE );
 
 		// Read value.
 		int intervals = Integer.parseInt(sInput);
 
-		// We calculate the B-spline transformation coefficients.
-		double [][]cx = new double[intervals+3][intervals+3];
-		double [][]cy = new double[intervals+3][intervals+3];
-
-		MiscTools.convertRawTransformationToBSpline(this.targetImp, intervals, transformation_x, transformation_y, cx, cy);
-
-		MiscTools.saveElasticTransformation(intervals, cx, cy, fn_tnf_elastic);
+		MiscTools.saveRawAsElastic( fn_tnf, fn_tnf_elastic, intervals,
+				targetImp );
 		// record macro call
 		record( IODialog.CONVERT_TO_ELASTIC, fn_tnf, fn_tnf_elastic,
-				String.valueOf( intervals ) );
+				String.valueOf( intervals ), targetImp.getTitle() );
 	}	// end  method saveTransformationInElastic
-
 
 	/*------------------------------------------------------------------*/
 	/**
