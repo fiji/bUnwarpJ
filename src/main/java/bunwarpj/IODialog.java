@@ -410,49 +410,28 @@ public class IODialog extends Dialog implements ActionListener
 	private void adaptCoefficients ()
 	{
 		// We ask the user for the elastic transformation file
-		final OpenDialog od = new OpenDialog("Adapt Coefficients", "");
-		final String path = od.getDirectory();
-		final String filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
+		String fn_tnf = MiscTools.getUserSelectedFilePath(
+				"Adapt Coefficients - Select input elastic transformation file",
+				false );
+		if( fn_tnf == null )
 			return;
-		}
-		String fn_tnf = path+filename;
-
-		int intervals=MiscTools.numberOfIntervalsOfTransformation(fn_tnf);
-
-		double [][]cx = new double[intervals+3][intervals+3];
-		double [][]cy = new double[intervals+3][intervals+3];
-
-		MiscTools.loadTransformation(fn_tnf, cx, cy);
-
 
 		// We ask the user for the image factor
-		String sInput = JOptionPane.showInputDialog(null, "Image Factor?", "Adapt Coefficients", JOptionPane.QUESTION_MESSAGE);
-
-		// Adapt coefficients.
-		double dImageSizeFactor = Double.parseDouble(sInput);
-
-		for(int i = 0; i < (intervals+3); i++)
-			for(int j = 0; j < (intervals+3); j++)
-			{
-				cx[i][j] *= dImageSizeFactor;
-				cy[i][j] *= dImageSizeFactor;
-			}
+		String sInput = JOptionPane.showInputDialog( null, "Image Factor?",
+				"Adapt Coefficients", JOptionPane.QUESTION_MESSAGE );
+		double dImageSizeFactor = Double.parseDouble( sInput );
 
 		// Save transformation
-		OpenDialog odSave = new OpenDialog("Saving adapted transformation file","");
-		String path_save = odSave.getDirectory();
-		String filename_save = odSave.getFileName();
-		if ((path_save == null) || (filename_save == null))
+		String sNewFileName = MiscTools.getUserSelectedFilePath(
+				"Adapt Coefficients - Select output elastic transformation file",
+				true );
+		if( sNewFileName == null )
 			return;
 
-		String sNewFileName = path_save + filename_save;
-		MiscTools.saveElasticTransformation(intervals, cx, cy, sNewFileName);
+		MiscTools.adaptCoefficients( fn_tnf, dImageSizeFactor, sNewFileName );
 		// record macro call
 		record( IODialog.ADAPT_COEFFICIENTS, fn_tnf, sInput, sNewFileName );
 	}
-
-
 	/*------------------------------------------------------------------*/
 	/**
 	 * Save an elastic transformation in raw format

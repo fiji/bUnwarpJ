@@ -2915,6 +2915,36 @@ public class MiscTools
 	
 	//------------------------------------------------------------------
 	/**
+	 * Adapt B-spline coefficients based on a scale factor.
+	 * @param inputTransfPath complete path to input transform file
+	 * @param scaleFactor isotropic scale factor
+	 * @param outputTransfPath complete path to output transform file
+	 */
+	public static void adaptCoefficients(
+			String inputTransfPath,
+			double scaleFactor,
+			String outputTransfPath )
+	{
+		int intervals =
+				MiscTools.numberOfIntervalsOfTransformation( inputTransfPath );
+
+		double [][]cx = new double[ intervals + 3 ][ intervals + 3 ];
+		double [][]cy = new double[ intervals + 3 ][ intervals + 3 ];
+
+		MiscTools.loadTransformation( inputTransfPath, cx, cy );
+
+		// Adapt coefficients based on scale factor.
+		for(int i = 0; i < (intervals+3); i++)
+			for(int j = 0; j < (intervals+3); j++)
+			{
+				cx[i][j] *= scaleFactor;
+				cy[i][j] *= scaleFactor;
+			}
+
+		MiscTools.saveElasticTransformation( intervals, cx, cy,
+				outputTransfPath );
+	}
+	/**
 	 * Adapt B-spline coefficients to a scale factor
 	 * @param xScale
 	 * @param yScale
