@@ -2948,38 +2948,21 @@ public class bUnwarpJ_ implements PlugIn
      *
      * @param inputTransfPath complete path to input raw transform file
      * @param outputTransfPath complete path to output raw transform file
+     * @param targetTitle target image title
      */
     public static void invertRawTransform(
     		final String inputTransfPath,
-    		final String outputTransfPath )
+    		final String outputTransfPath,
+    		final String targetTitle )
     {
-    	final MainDialog md = bUnwarpJ_.getMainDialog();
-    	if( null == md )
+    	final ImagePlus targetImp = WindowManager.getImage( targetTitle );
+    	if( null == targetImp )
     	{
-    		IJ.log( "Error: bUnwarpJ dialog not found!" );
+    		IJ.error( "Error: " + targetTitle + " image not found!" );
     		return;
     	}
-    	// load input transform
-    	final double [][]transformation_x =
-    		new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-		final double [][]transformation_y =
-			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-
-		MiscTools.loadRawTransformation( inputTransfPath,
-				transformation_x, transformation_y);
-
-		// inverse transform tables
-		double[][] inv_x =
-			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-		double[][] inv_y =
-			new double[ md.getTarget().getHeight()][ md.getTarget().getWidth() ];
-		// approximate inverse
-		MiscTools.invertRawTransformation( md.getTargetImp(), transformation_x,
-				transformation_y, inv_x, inv_y );
-		// save to file
-		MiscTools.saveRawTransformation( outputTransfPath,
-				md.getTarget().getWidth(), md.getTarget().getHeight(),
-				inv_x, inv_y );
+    	MiscTools.invertRawTransformation( inputTransfPath, outputTransfPath,
+    			targetImp );
     }
     /**
 	 * Get bUnwarpJ main dialog (if exists)

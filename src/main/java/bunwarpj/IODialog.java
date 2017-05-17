@@ -514,42 +514,23 @@ public class IODialog extends Dialog implements ActionListener
 	 */
 	private void invertRawTransformation ()
 	{
-		// We ask the user for the input raw transformation file
-		final OpenDialog od = new OpenDialog("Load raw transformation file", "");
-		final String path = od.getDirectory();
-		final String filename = od.getFileName();
-		if ((path == null) || (filename == null)) {
-			return;
-		}
-		String fn_tnf = path+filename;
-
-		double[][] transformation_x = new double[targetImp.getHeight()] [targetImp.getWidth()];
-		double[][] transformation_y = new double[targetImp.getHeight()] [targetImp.getWidth()];
-
-		MiscTools.loadRawTransformation(fn_tnf, transformation_x, transformation_y);
-
-		// We ask the user for the output raw deformation file.
-		OpenDialog od_inverse = new OpenDialog("Saving in raw - select raw transformation file", "");
-		String path_inverse = od_inverse.getDirectory();
-		String filename_inverse = od_inverse.getFileName();
-		if ((path_inverse == null) || (filename_inverse == null))
+		// We ask the user for the raw transformation file
+		String fn_tnf = MiscTools.getUserSelectedFilePath(
+					"Load raw transformation file", false );
+		if( null == fn_tnf )
 			return;
 
-		String fn_tnf_inverse = path_inverse + filename_inverse;
+		// We ask the user for the raw deformation file.
+		String fn_tnf_inverse = MiscTools.getUserSelectedFilePath(
+					"Saving in raw - select raw transformation file", true );
+		if( null == fn_tnf_inverse )
+			return;
 
-		double[][] inv_x = new double[targetImp.getHeight()] [targetImp.getWidth()];
-		double[][] inv_y = new double[targetImp.getHeight()] [targetImp.getWidth()];
-
-
-		MiscTools.invertRawTransformation(targetImp, transformation_x, transformation_y, inv_x, inv_y);
-
-		MiscTools.saveRawTransformation(fn_tnf_inverse, targetImp.getWidth(), 
-				targetImp.getHeight(), inv_x, inv_y);
+		MiscTools.invertRawTransformation( fn_tnf, fn_tnf_inverse, targetImp );
 		// record macro call
-		record( IODialog.INVERT_RAW, fn_tnf, fn_tnf_inverse );
+		record( IODialog.INVERT_RAW, fn_tnf, fn_tnf_inverse,
+				targetImp.getTitle() );
 	}	// end  method saveTransformationInElastic
-
-
 	/*------------------------------------------------------------------*/
 	/**
 	 * Compare two opposite transformations (direct and inverse)

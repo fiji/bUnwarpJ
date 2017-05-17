@@ -1193,12 +1193,37 @@ public class MiscTools
 				}
 			}
 	} // end invertRawTransformation 	
-	
-	
-	
-	
-	
-	
+	/**
+	 * Approximate the inverse of a raw transform and save it to file.
+	 * @param inputTransfPath complete path to input raw transform file
+	 * @param outputTransfPath complete path to output transform file
+	 * @param targetImp target image
+	 */
+	public static void invertRawTransformation(
+			String inputTransfPath,
+			String outputTransfPath,
+			ImagePlus targetImp )
+	{
+		double[][] transformation_x =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double[][] transformation_y =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+
+		MiscTools.loadRawTransformation( inputTransfPath, transformation_x,
+				transformation_y );
+
+		double[][] inv_x =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+		double[][] inv_y =
+				new double[ targetImp.getHeight() ][ targetImp.getWidth() ];
+
+		MiscTools.invertRawTransformation( targetImp, transformation_x,
+				transformation_y, inv_x, inv_y );
+
+		MiscTools.saveRawTransformation( outputTransfPath, targetImp.getWidth(),
+				targetImp.getHeight(), inv_x, inv_y );
+	}
+
 	//------------------------------------------------------------------
 	/**
 	 * Warping index for comparing elastic deformations with any kind
