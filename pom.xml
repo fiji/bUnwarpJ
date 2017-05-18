@@ -11,7 +11,7 @@
 
 	<groupId>sc.fiji</groupId>
 	<artifactId>bUnwarpJ_</artifactId>
-	<version>2.6.7</version>
+	<version>2.6.8-SNAPSHOT</version>
 
 	<name>bUnwarpJ</name>
 	<description>bUnwarpJ plugin for Fiji.</description>
