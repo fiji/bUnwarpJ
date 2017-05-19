@@ -565,7 +565,8 @@ public class IODialog extends Dialog implements ActionListener
 
 		// record macro call
 		record( IODialog.COMPARE_OPPOSITE_ELASTIC,
-				directTransfFilename, inverseTransfFilename );
+				directTransfFilename, inverseTransfFilename,
+				targetImp.getTitle(), sourceImp.getTitle() );
 	}
 
 	/*------------------------------------------------------------------*/
