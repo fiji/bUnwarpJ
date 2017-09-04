@@ -390,9 +390,7 @@ public class BSplineModel implements Runnable
 				this.subWidth /= 2;
 				this.subHeight /= 2;
 			}while(this.subWidth > BSplineModel.MAX_OUTPUT_SIZE 
-					|| this.subHeight > BSplineModel.MAX_OUTPUT_SIZE);	
-			
-			//IJ.log("subWidth =" + this.subWidth);
+					|| this.subHeight > BSplineModel.MAX_OUTPUT_SIZE);
 		}
 		else
 			this.bSubsampledOutput = false;
@@ -1629,7 +1627,8 @@ public class BSplineModel implements Runnable
 			MiscTools.extractImage(ip, this.original_image);
 			
 			// Copy the pixel array and scale if necessary
-			if(this.maxImageSubsamplingFactor != 0)
+			if(this.maxImageSubsamplingFactor != 0
+				&& this.maxImageSubsamplingFactor != 1 )
 			{
 				final float scaleFactor = (float) (1.0f / this.maxImageSubsamplingFactor);
 				this.ip = MiscTools.scale(ip, scaleFactor);
