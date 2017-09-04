@@ -46,10 +46,10 @@ public class BSplineModel implements Runnable
 
 	// Some constants
 	/** maximum output window dimensions */
-	public static int MAX_OUTPUT_SIZE = 1024;
+	public static final int MAX_OUTPUT_SIZE = 1024;
 	
 	/** minimum image size */
-	private static int min_image_size = 4;
+	private static final int min_image_size = 4;
 	
 	/** image information (after corresponding scaling) */
 	private ImageProcessor ip = null;
