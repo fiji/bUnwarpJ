@@ -240,7 +240,7 @@ public class MainDialog extends GenericDialog
 		super("bUnwarpJ", null);
 		setModal(false);
 
-		this.imageList 					= imageList;
+		this.imageList 				= imageList;
 		this.mode						= mode;
 		this.maxImageSubsamplingFactor 	= maxImageSubsamplingFactor;
 		this.min_scale_deformation 		= min_scale_deformation;
@@ -253,7 +253,6 @@ public class MainDialog extends GenericDialog
 		this.stopThreshold         		= stopThreshold;
 		this.richOutput 				= richOutput;
 		this.saveTransformation			= saveTransformation;
-
 
 		// We create a list of image titles to be used as source or target images
 		String[] titles = new String[imageList.length];
@@ -316,14 +315,13 @@ public class MainDialog extends GenericDialog
 		
 		addNumericField("Stop_Threshold :", this.stopThreshold, 2);
 		addCheckbox(" Verbose ", this.richOutput);
-		addCheckbox(" Save_Transformations ", this.saveTransformation);       	  
+		addCheckbox(" Save_Transformations ", this.saveTransformation);
 
 		// Check if it is a macro call
 		this.bMacro = Macro.getOptions() != null;
-		
-		if( bMacro )
-			macroArgs = Macro.getOptions();
 
+		if( bMacro )
+		    macroArgs = Macro.getOptions();
 		// Start source and target images (concurrent threads 
 		// need to be started later)		
 		createSourceImage(bIsReverse);
@@ -332,8 +330,7 @@ public class MainDialog extends GenericDialog
 		setSecondaryPointHandlers();	
 
 	} /* end MainDialog (constructor) */
-
-
+	
 	/*------------------------------------------------------------------*/
 	/**
 	 * Set source Mask.
@@ -906,7 +903,30 @@ public class MainDialog extends GenericDialog
 				{
 					this.sourceChoiceIndex = i;
 					break;
-				}			
+				}
+			// get subsampling factor from macro options
+			this.maxImageSubsamplingFactor = Integer.parseInt(  Macro.getValue( macroOptions,
+				"Image_Subsample_Factor", String.valueOf( this.maxImageSubsamplingFactor ) ) );
+			// get min scale from macro options
+			item = this.minScaleChoice.getSelectedItem();
+			item = Macro.getValue(macroOptions, "Initial_Deformation", item);
+			String[] sMinScaleDeformationChoices = { "Very Coarse", "Coarse", "Fine", "Very Fine" };
+			for(int i = 0; i < sMinScaleDeformationChoices.length; i++)
+			    if( sMinScaleDeformationChoices[i].equals(item) )
+			    {
+				this.min_scale_deformation = i;
+				break;
+			    }
+			// get max scale from macro options
+			item = this.maxScaleChoice.getSelectedItem();
+			item = Macro.getValue(macroOptions, "Initial_Deformation", item);
+			String[] sMaxScaleDeformationChoices = { "Very Coarse", "Coarse", "Fine", "Very Fine", "Super Fine" };
+			for(int i = 0; i < sMaxScaleDeformationChoices.length; i++)
+			    if( sMaxScaleDeformationChoices[i].equals(item) )
+			    {
+				this.max_scale_deformation = i;
+				break;
+			    }
 		}	
 		
 		//System.out.println("Created source with maxImageSubsamplingFactor = " + maxImageSubsamplingFactor);
@@ -962,7 +982,30 @@ public class MainDialog extends GenericDialog
 				{
 					this.targetChoiceIndex = i;
 					break;
-				}			
+				}
+			// get subsampling factor from macro options
+			this.maxImageSubsamplingFactor = Integer.parseInt(  Macro.getValue( macroOptions,
+				"Image_Subsample_Factor", String.valueOf( this.maxImageSubsamplingFactor ) ) );
+			// get min scale from macro options
+			item = this.minScaleChoice.getSelectedItem();
+			item = Macro.getValue(macroOptions, "Initial_Deformation", item);
+			String[] sMinScaleDeformationChoices = { "Very Coarse", "Coarse", "Fine", "Very Fine" };
+			for(int i = 0; i < sMinScaleDeformationChoices.length; i++)
+			    if( sMinScaleDeformationChoices[i].equals(item) )
+			    {
+				this.min_scale_deformation = i;
+				break;
+			    }
+			// get max scale from macro options
+			item = this.maxScaleChoice.getSelectedItem();
+			item = Macro.getValue(macroOptions, "Initial_Deformation", item);
+			String[] sMaxScaleDeformationChoices = { "Very Coarse", "Coarse", "Fine", "Very Fine", "Super Fine" };
+			for(int i = 0; i < sMaxScaleDeformationChoices.length; i++)
+			    if( sMaxScaleDeformationChoices[i].equals(item) )
+			    {
+				this.max_scale_deformation = i;
+				break;
+			    }
 		}	
 
 		targetImp = imageList[targetChoiceIndex];
