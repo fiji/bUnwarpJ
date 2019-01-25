@@ -4,6 +4,10 @@ package bunwarpj;
 import ij.IJ;
 import ij.ImageJ;
 
+/**
+ * Class to test the plugin GUI using two grayscale images.
+ *
+ */
 public class TestGUI {
 
 	/**
