@@ -1623,13 +1623,16 @@ public class BSplineModel implements Runnable
 			this.original_image = new double[width * height];
 			this.originalHeight = this.height;
 			this.originalWidth = this.width;
-			
+
+			boolean scaled = false;
+
 			MiscTools.extractImage(ip, this.original_image);
 			
 			// Copy the pixel array and scale if necessary
 			if(this.maxImageSubsamplingFactor != 0
 				&& this.maxImageSubsamplingFactor != 1 )
 			{
+				scaled = true;
 				final float scaleFactor = (float) (1.0f / this.maxImageSubsamplingFactor);
 				this.ip = MiscTools.scale(ip, scaleFactor);
 				this.width = ip.getWidth();
@@ -1640,7 +1643,7 @@ public class BSplineModel implements Runnable
 						
 			
 			// update sub-sampled output version information if necessary
-			if(this.width <= this.subWidth)
+			if( scaled )
 			{
 				this.subWidth = this.width;
 				this.subHeight = this.height;
