@@ -93,6 +93,7 @@ public class CumulativeQueue extends Vector < Double >
     /*------------------------------------------------------------------*/
     /**
      * Push a value at the end of the queue.
+     * @param x value to be pushed at the end of the queue
      */
     public void push_back(double x)
     {

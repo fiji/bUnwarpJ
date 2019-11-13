@@ -2558,6 +2558,8 @@ public class bUnwarpJ_ implements PlugIn
      * the source image.
      *
      * @param transfPath complete path to elastic transform file
+     * @param targetTitle title of the target image
+     * @param sourceTitle title of the source image
      */
     public static void loadElasticTransform(
     		String transfPath,

@@ -359,6 +359,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get source Mask.
+	 * @return source mask
 	 */
 	public Mask getSourceMask ()
 	{
@@ -368,6 +369,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get target Mask.
+	 * @return target mask
 	 */
 	public Mask getTargetMask ()
 	{
@@ -693,23 +695,27 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get finalActionLaunched flag.
+	 * @return true if the final action has started
 	 */
 	public boolean isFinalActionLaunched () {return finalActionLaunched;}
 
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get clearMask flag.
+	 * @return true to clear mask
 	 */
 	public boolean isClearMaskSet () {return clearMask;}
 
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get saveTransformation flag.
+	 * @return true if the transformations have to be saved
 	 */
 	public boolean isSaveTransformationSet () {return saveTransformation;}
 	/*------------------------------------------------------------------*/
 	/**
 	 * Set saveTransformation flag.
+	 * @param b set to true to save transformations into file
 	 */
 	public void setSaveTransformation(boolean b) 
 	{ 
@@ -719,6 +725,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get stopRegistration flag.
+	 * @return true if the registration has been stopped
 	 */
 	public boolean isStopRegistrationSet () {return stopRegistration;}
 
@@ -759,6 +766,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Set the clearMask flag.
+	 * @param val flag to clear mask
 	 */
 	public void setClearMask (boolean val) {clearMask = val;}
 
@@ -771,12 +779,14 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get the source initial affine matrix.
+	 * @return initial affine transform of source image
 	 */
 	public double[][] getSourceAffineMatrix () {return this.sourceAffineMatrix;}
 
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get the target initial affine matrix.
+	 * @return initial affine transform of target image
 	 */
 	public double[][] getTargetAffineMatrix () {return this.targetAffineMatrix;}
 
@@ -1244,6 +1254,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get source point handler.
+	 * @return source point handler
 	 */
 	public PointHandler getSourcePh() 
 	{
@@ -1253,6 +1264,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get target point handler.
+	 * @return target point handler
 	 */
 	public PointHandler getTargetPh() 
 	{
@@ -1261,7 +1273,8 @@ public class MainDialog extends GenericDialog
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Get source point handler.
+	 * Get source mask.
+	 * @return source mask
 	 */
 	public Mask getSourceMsk() 
 	{
@@ -1270,7 +1283,8 @@ public class MainDialog extends GenericDialog
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Get target point handler.
+	 * Get target mask.
+	 * @return target mask
 	 */
 	public Mask getTargetMsk() 
 	{
@@ -1280,6 +1294,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Set final action launched flag.
+	 * @param b set to true if the final action has started
 	 */
 	public void setFinalActionLaunched(boolean b) 
 	{
@@ -1307,6 +1322,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get target image model.
+	 * @return target image model
 	 */
 	public BSplineModel getTarget() {
 		return this.target;
@@ -1314,7 +1330,8 @@ public class MainDialog extends GenericDialog
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Get original source image process.
+	 * Get original source image processor.
+	 * @return original source image processor
 	 */
 	public ImageProcessor getOriginalSourceIP() {
 		return this.originalSourceIP;
@@ -1322,7 +1339,8 @@ public class MainDialog extends GenericDialog
 
 	/*------------------------------------------------------------------*/
 	/**
-	 * Get original target image process.
+	 * Get original target image processor.
+	 * @return original target image processor
 	 */
 	public ImageProcessor getOriginalTargetIP() {
 		return this.originalTargetIP;
@@ -1331,6 +1349,7 @@ public class MainDialog extends GenericDialog
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get source image model.
+	 * @return source image model
 	 */
 	public BSplineModel getSource() {
 		return this.source;
