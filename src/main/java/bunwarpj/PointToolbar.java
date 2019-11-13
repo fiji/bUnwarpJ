@@ -145,6 +145,7 @@ public class PointToolbar extends Canvas implements MouseListener
 	/*------------------------------------------------------------------*/
 	/**
 	 * Get current tool.
+	 * @return constant that defines the current tool
 	 */
 	public int getCurrentTool ()
 	{
