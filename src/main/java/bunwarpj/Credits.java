@@ -28,8 +28,8 @@ import ij.IJ;
  */
 public class Credits implements ij.plugin.PlugIn
 { /* begin class Credits */
-
-	static public String version = "2.6 03-22-2010";
+	/** plugin version information */
+	static public String version = "2.6.12 11-13-2019";
 
 	/*....................................................................
        Public methods
