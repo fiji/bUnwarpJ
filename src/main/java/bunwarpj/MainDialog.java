@@ -919,7 +919,7 @@ public class MainDialog extends GenericDialog
 			    }
 			// get max scale from macro options
 			item = this.maxScaleChoice.getSelectedItem();
-			item = Macro.getValue(macroOptions, "Initial_Deformation", item);
+			item = Macro.getValue(macroOptions, "Final_Deformation", item);
 			String[] sMaxScaleDeformationChoices = { "Very Coarse", "Coarse", "Fine", "Very Fine", "Super Fine" };
 			for(int i = 0; i < sMaxScaleDeformationChoices.length; i++)
 			    if( sMaxScaleDeformationChoices[i].equals(item) )
@@ -998,7 +998,7 @@ public class MainDialog extends GenericDialog
 			    }
 			// get max scale from macro options
 			item = this.maxScaleChoice.getSelectedItem();
-			item = Macro.getValue(macroOptions, "Initial_Deformation", item);
+			item = Macro.getValue(macroOptions, "Final_Deformation", item);
 			String[] sMaxScaleDeformationChoices = { "Very Coarse", "Coarse", "Fine", "Very Fine", "Super Fine" };
 			for(int i = 0; i < sMaxScaleDeformationChoices.length; i++)
 			    if( sMaxScaleDeformationChoices[i].equals(item) )
