@@ -3074,8 +3074,9 @@ public class MiscTools
 
 			// We will use threads to display parts of the output image
 			int block_height = targetHeight / nproc;
-			if (targetHeight % 2 != 0) 
-				block_height++;
+			//Removed to fix a NegativeArraySizeException with some combinations of targetHeight and nproc
+			//if (targetHeight % 2 != 0) 
+			//	block_height++;
 						
 			int nThreads = nproc; 			
 						
@@ -3155,8 +3156,9 @@ public class MiscTools
 
 			// We will use threads to display parts of the output image
 			int block_height = targetHeight / nproc;
-			if (targetHeight % 2 != 0) 
-				block_height++;
+			//Removed to fix a NegativeArraySizeException with some combinations of targetHeight and nproc
+			//if (targetHeight % 2 != 0) 
+			//	block_height++;
 			
 			
 			int nThreads = nproc; 
