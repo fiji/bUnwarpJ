@@ -1,4 +1,4 @@
-[![](https://travis-ci.org/fiji/bUnwarpJ.svg?branch=master)](https://travis-ci.org/fiji/bUnwarpJ)
+[![](https://github.com/fiji/bUnwarpJ/actions/workflows/build-main.yml/badge.svg)](https://github.com/fiji/bUnwarpJ/actions/workflows/build-main.yml)
 
 bUnwarpJ
 ========
